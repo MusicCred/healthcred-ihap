@@ -235,6 +235,177 @@ nav{
   padding:0 8px;
 }
 
+/* ── MISSION SECTION ── */
+.mission-section{
+  background:rgba(255,255,255,.97);
+  padding:64px 20px;
+  position:relative;
+  z-index:1;
+  border-bottom:1px solid var(--line);
+}
+.mission-inner{max-width:860px;margin:0 auto}
+.section-eyebrow{
+  font-family:sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.section-eyebrow::before{content:'';width:16px;height:2px;background:var(--gold);border-radius:1px;flex-shrink:0}
+.mission-h{
+  font-size:clamp(26px,5vw,44px);
+  font-weight:900;
+  color:var(--navy);
+  line-height:1.1;
+  letter-spacing:-.5px;
+  margin-bottom:20px;
+  max-width:700px;
+}
+.mission-body{
+  font-size:clamp(15px,3vw,18px);
+  color:var(--gray);
+  line-height:1.8;
+  max-width:720px;
+  margin-bottom:40px;
+}
+.mission-body p{margin-bottom:16px}
+.mission-body p:last-child{margin-bottom:0}
+.mission-body strong{color:var(--navy);font-weight:700}
+.mission-cards{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+.m-card{
+  background:var(--cream);
+  border-radius:14px;
+  padding:24px 20px;
+  border-left:4px solid var(--gold);
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+.m-card-icon{
+  font-size:28px;
+  flex-shrink:0;
+  line-height:1;
+  margin-top:2px;
+}
+.m-card-title{
+  font-family:sans-serif;
+  font-size:15px;
+  font-weight:800;
+  color:var(--navy);
+  margin-bottom:6px;
+  letter-spacing:.2px;
+}
+.m-card-body{
+  font-family:sans-serif;
+  font-size:13px;
+  color:var(--gray);
+  line-height:1.65;
+}
+
+/* ── HOW IT WORKS ── */
+.how-section{
+  background:var(--navy);
+  padding:64px 20px;
+  position:relative;
+  z-index:1;
+}
+.how-inner{max-width:860px;margin:0 auto}
+.how-h{
+  font-size:clamp(24px,5vw,40px);
+  font-weight:900;
+  color:var(--white);
+  margin-bottom:8px;
+  letter-spacing:-.5px;
+}
+.how-sub{
+  font-family:sans-serif;
+  font-size:15px;
+  color:rgba(255,255,255,.6);
+  margin-bottom:48px;
+  line-height:1.6;
+  max-width:560px;
+}
+.how-steps{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:24px;
+}
+.how-step{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  padding:24px;
+  background:rgba(255,255,255,.05);
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.how-num{
+  width:44px;
+  height:44px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:sans-serif;
+  font-size:16px;
+  font-weight:900;
+  color:var(--navy);
+  flex-shrink:0;
+}
+.how-step-title{
+  font-family:sans-serif;
+  font-size:15px;
+  font-weight:800;
+  color:var(--white);
+  margin-bottom:6px;
+}
+.how-step-body{
+  font-family:sans-serif;
+  font-size:13px;
+  color:rgba(255,255,255,.65);
+  line-height:1.65;
+}
+.who-benefits{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:48px;
+  padding-top:40px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.who-card{
+  background:rgba(255,255,255,.05);
+  border-radius:12px;
+  padding:20px 16px;
+  border:1px solid rgba(255,255,255,.07);
+  text-align:center;
+}
+.who-card-label{
+  font-family:sans-serif;
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:var(--gold2);
+  margin-bottom:8px;
+  font-weight:700;
+}
+.who-card-body{
+  font-family:sans-serif;
+  font-size:12px;
+  color:rgba(255,255,255,.6);
+  line-height:1.6;
+}
+
 /* ── STORY STRIP ── */
 .story-strip{
   position:relative;z-index:1;
@@ -551,6 +722,10 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 
 /* ── TABLET ── */
 @media(min-width:600px){
+  .mission-cards{grid-template-columns:1fr 1fr}
+  .how-steps{grid-template-columns:1fr 1fr}
+  .who-benefits{grid-template-columns:repeat(4,1fr)}
+}
   nav{padding:0 32px;height:68px}
   .nav-logo-img{height:48px}
   .nav-cta{font-size:13px;padding:11px 24px}
@@ -626,6 +801,109 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
   </div>
   <button class="btn-primary" onclick="scrollToDonate()">Make a Tax-Deductible Gift →</button>
   <div class="hero-trust">🔒 &nbsp;Secure · 501(c)(3) · EIN 99-3070551 · Every dollar goes to work</div>
+</div>
+
+<!-- ── MISSION ── -->
+<div class="mission-section">
+  <div class="mission-inner">
+    <div class="section-eyebrow">Our Mission</div>
+    <h2 class="mission-h">Healthcare doesn't stop at the gate — and neither do we.</h2>
+    <div class="mission-body">
+      <p>The <strong>Inmate Health Access Program (IHAP)</strong> is a 501(c)(3) nonprofit embedded inside correctional facilities across Florida, Georgia, and Alabama. We connect justice-involved individuals to real healthcare coverage — ACA marketplace plans and Medicaid — <strong>before they walk out the door.</strong></p>
+      <p>Every year, 7 million Americans cycle through the justice system with no health coverage waiting on the other side. Without a doctor, a prescription, or a plan, many return within weeks. <strong>IHAP breaks that cycle.</strong> We enroll individuals during custody so coverage activates the moment they're released — at no cost to them, ever.</p>
+      <p>This isn't charity. It's infrastructure. <strong>When people have healthcare, they don't come back.</strong> IHAP saves lives, reduces recidivism, and relieves the financial burden on facilities, counties, and taxpayers alike.</p>
+    </div>
+
+    <div class="mission-cards">
+      <div class="m-card">
+        <div class="m-card-icon">🏥</div>
+        <div>
+          <div class="m-card-title">Healthcare Enrollment at Transition</div>
+          <div class="m-card-body">We enroll individuals during incarceration so ACA or Medicaid coverage is active the day they're released — zero gap, zero delay, zero cost to the individual.</div>
+        </div>
+      </div>
+      <div class="m-card">
+        <div class="m-card-icon">🔄</div>
+        <div>
+          <div class="m-card-title">Breaking the Cycle of Recidivism</div>
+          <div class="m-card-body">People without healthcare reoffend at dramatically higher rates. Studies show up to 80% reduction in reoffense when continuity of care is in place at reentry.</div>
+        </div>
+      </div>
+      <div class="m-card">
+        <div class="m-card-icon">🤝</div>
+        <div>
+          <div class="m-card-title">A Partnership That Benefits Everyone</div>
+          <div class="m-card-body">Facilities reduce costs. Counties save on emergency services. Carriers build their membership. Individuals get a real shot. IHAP is the bridge that makes it all work.</div>
+        </div>
+      </div>
+      <div class="m-card">
+        <div class="m-card-icon">📋</div>
+        <div>
+          <div class="m-card-title">Proven Results in the Field</div>
+          <div class="m-card-body">65+ facilities. 9,217 active lives connected. $5.9M in documented county savings from Lee County, FL alone. This isn't a pilot — it's a working system.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<div class="how-section">
+  <div class="how-inner">
+    <div class="section-eyebrow" style="color:var(--gold2)">How It Works</div>
+    <h2 class="how-h">From custody to covered — in three steps.</h2>
+    <p class="how-sub">IHAP is embedded directly inside facilities. Our team works alongside facility staff to identify, enroll, and activate coverage — so no one slips through the cracks at release.</p>
+
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div>
+          <div class="how-step-title">Identify &amp; Enroll</div>
+          <div class="how-step-body">Inside the facility, IHAP staff identify uninsured individuals and guide them through ACA or Medicaid enrollment. Most qualify immediately. No cost. No paperwork burden on the facility.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div>
+          <div class="how-step-title">Coverage Activates at Release</div>
+          <div class="how-step-body">Plans are structured to activate the moment someone walks out. No waiting period. No coverage gap. A doctor, prescriptions, and mental health support are available from day one.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div>
+          <div class="how-step-title">Ongoing Reentry Support</div>
+          <div class="how-step-body">IHAP's team follows up post-release to ensure coverage stays active, appointments are made, and individuals remain connected to care — not the cycle.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <div>
+          <div class="how-step-title">Already-Insured Population</div>
+          <div class="how-step-body">For individuals who already have coverage, IHAP ensures their plan remains active through the transition — managing AOR assignments so benefits don't lapse at the worst possible moment.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="who-benefits">
+      <div class="who-card">
+        <div class="who-card-label">Individuals</div>
+        <div class="who-card-body">Leave with real healthcare coverage. A doctor on day one. A chance that actually lasts.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-card-label">Facilities</div>
+        <div class="who-card-body">Reduced uncompensated care costs. Healthier populations. A reentry partner that delivers.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-card-label">Counties &amp; Taxpayers</div>
+        <div class="who-card-body">Lower ER utilization. Fewer returns. Lee County documented $5.9M in savings in year one.</div>
+      </div>
+      <div class="who-card">
+        <div class="who-card-label">Communities</div>
+        <div class="who-card-body">Safer neighborhoods. Productive citizens. Health equity that reaches the people most left behind.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ── STORY STRIP ── -->
