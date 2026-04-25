@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Get Involved — IHAP | Inmate Health Access Program</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<meta name="description" content="Join IHAP as a partner, member, or supporter. Sheriffs, nonprofits, employers, and individuals can all play a role in breaking the cycle of recidivism.">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ── PAGE-SPECIFIC ── */
+.page-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#1A2840 55%,#2D1A47 100%);
+  padding:64px 24px 56px;text-align:center;position:relative;z-index:1;
+}
+.page-hero h1{
+  font-size:clamp(2rem,6vw,3.2rem);color:#fff;font-weight:900;
+  letter-spacing:-.5px;margin-bottom:16px;
+}
+.page-hero p{
+  font-size:clamp(1rem,2.5vw,1.25rem);color:rgba(255,255,255,.8);
+  max-width:680px;margin:0 auto;
+}
+.gold-accent{color:var(--gold3)}
+
+/* ── PARTNER TYPES ── */
+.section{padding:64px 24px;position:relative;z-index:1}
+.section-inner{max-width:1060px;margin:0 auto}
+.section-label{
+  font-family:sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:10px;text-align:center;
+}
+.section-title{
+  font-size:clamp(1.6rem,4vw,2.4rem);color:var(--navy);font-weight:900;
+  text-align:center;margin-bottom:14px;
+}
+.section-sub{
+  font-size:1rem;color:var(--gray);text-align:center;
+  max-width:620px;margin:0 auto 48px;
+}
+
+/* PARTNER CARDS */
+.partner-grid{
+  display:grid;gap:24px;
+  grid-template-columns:1fr;
+}
+@media(min-width:640px){.partner-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.partner-grid{grid-template-columns:repeat(3,1fr)}}
+
+.partner-card{
+  background:#fff;border-radius:16px;padding:28px 24px;
+  border:1px solid var(--line);
+  box-shadow:0 4px 18px rgba(0,0,0,.06);
+  display:flex;flex-direction:column;gap:12px;
+  transition:transform .2s,box-shadow .2s;
+}
+.partner-card:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,0,0,.12)}
+.partner-icon{
+  width:52px;height:52px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.partner-card h3{
+  font-size:1.1rem;color:var(--navy);font-weight:800;line-height:1.3;
+}
+.partner-card p{font-size:.92rem;color:var(--gray);line-height:1.6}
+.partner-card ul{
+  margin:0;padding:0 0 0 16px;font-size:.88rem;color:var(--gray);
+  line-height:1.8;
+}
+.partner-cta{
+  margin-top:auto;padding:10px 18px;border-radius:8px;
+  font-family:sans-serif;font-size:.8rem;font-weight:700;
+  letter-spacing:.4px;text-transform:uppercase;text-align:center;
+  display:inline-block;transition:all .2s;cursor:pointer;
+  border:2px solid var(--navy);color:var(--navy);
+}
+.partner-cta:hover{background:var(--navy);color:#fff}
+
+/* ── MEMBERSHIP ── */
+.membership-section{
+  background:linear-gradient(135deg,var(--navy),#1A2840);
+  padding:72px 24px;position:relative;z-index:1;
+}
+.membership-inner{max-width:1060px;margin:0 auto}
+.membership-title{
+  font-size:clamp(1.6rem,4vw,2.4rem);color:#fff;font-weight:900;
+  text-align:center;margin-bottom:12px;
+}
+.membership-sub{
+  font-size:1rem;color:rgba(255,255,255,.7);text-align:center;
+  max-width:560px;margin:0 auto 52px;
+}
+.tier-grid{
+  display:grid;gap:20px;
+  grid-template-columns:1fr;
+}
+@media(min-width:640px){.tier-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.tier-grid{grid-template-columns:repeat(4,1fr)}}
+
+.tier-card{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;padding:28px 20px;text-align:center;
+  display:flex;flex-direction:column;gap:10px;
+  transition:all .2s;
+}
+.tier-card:hover,.tier-card.featured{
+  background:rgba(255,255,255,.13);border-color:var(--gold);
+  transform:translateY(-4px);
+}
+.tier-badge{
+  font-family:sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold3);margin-bottom:4px;
+}
+.tier-amount{
+  font-size:2rem;font-weight:900;color:#fff;line-height:1;
+}
+.tier-period{font-size:.8rem;color:rgba(255,255,255,.5);font-family:sans-serif}
+.tier-name{font-size:1.1rem;font-weight:800;color:var(--gold3);font-family:sans-serif}
+.tier-perks{
+  font-size:.85rem;color:rgba(255,255,255,.7);line-height:1.8;
+  list-style:none;padding:0;margin:8px 0;text-align:left;
+}
+.tier-perks li::before{content:"✓ ";color:var(--gold3);font-weight:700}
+.tier-btn{
+  margin-top:auto;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:var(--navy);font-family:sans-serif;font-size:.82rem;font-weight:800;
+  letter-spacing:.5px;text-transform:uppercase;padding:12px;
+  border-radius:8px;border:none;cursor:pointer;transition:opacity .2s;
+  text-decoration:none;display:block;
+}
+.tier-btn:hover{opacity:.88}
+
+/* ── CORPORATE ── */
+.corporate-section{
+  background:var(--warm);padding:72px 24px;position:relative;z-index:1;
+}
+.corp-grid{
+  display:grid;gap:28px;
+  grid-template-columns:1fr;max-width:960px;margin:0 auto;
+}
+@media(min-width:640px){.corp-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.corp-grid{grid-template-columns:repeat(3,1fr)}}
+
+.corp-card{
+  background:#fff;border-radius:16px;padding:32px 24px;
+  border-top:4px solid var(--gold);
+  box-shadow:0 4px 20px rgba(0,0,0,.07);
+  display:flex;flex-direction:column;gap:12px;
+}
+.corp-card h3{font-size:1.2rem;color:var(--navy);font-weight:800}
+.corp-card p{font-size:.92rem;color:var(--gray);line-height:1.65}
+.corp-amount{
+  font-size:1.5rem;font-weight:900;color:var(--crimson);
+}
+
+/* ── VOLUNTEER CTA ── */
+.volunteer-strip{
+  background:linear-gradient(90deg,var(--crimson),var(--crimson2));
+  padding:52px 24px;text-align:center;position:relative;z-index:1;
+}
+.volunteer-strip h2{
+  font-size:clamp(1.4rem,4vw,2.2rem);color:#fff;font-weight:900;margin-bottom:14px;
+}
+.volunteer-strip p{
+  color:rgba(255,255,255,.85);font-size:1rem;max-width:560px;
+  margin:0 auto 28px;
+}
+.strip-btn{
+  background:#fff;color:var(--crimson);font-family:sans-serif;font-size:.85rem;
+  font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  padding:14px 36px;border-radius:10px;display:inline-block;
+  box-shadow:0 4px 20px rgba(0,0,0,.2);transition:all .2s;text-decoration:none;
+}
+.strip-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+</style>
+</head>
+<body>
+
+<!-- FLAG BACKGROUND -->
+<div class="flag-bg"><div class="flag-wave"></div></div>
+
+<!-- PATRIOT STRIPE -->
+<div class="patriot-stripe"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img">
+    <span class="nav-logo-text">IHAP</span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link">Our Story</a>
+    <a href="impact.html" class="nav-link">Impact</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="get-involved.html" class="nav-link active">Get Involved</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html#donate" class="nav-cta">Donate Now</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="about.html" class="nav-mobile-link">Our Story</a>
+  <a href="impact.html" class="nav-mobile-link">Impact</a>
+  <a href="how-it-works.html" class="nav-mobile-link">How It Works</a>
+  <a href="get-involved.html" class="nav-mobile-link active">Get Involved</a>
+  <a href="resources.html" class="nav-mobile-link">Resources</a>
+  <a href="contact.html" class="nav-mobile-link">Contact</a>
+  <a href="index.html#donate" class="nav-mobile-cta">Donate Now</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="section-label">Join the Mission</div>
+  <h1>There's a Role for <span class="gold-accent">Everyone</span></h1>
+  <p>Sheriffs. Nonprofits. Employers. Families. Faith communities. Whoever you are, IHAP has a way for you to make a lasting difference in the lives of people coming home.</p>
+</section>
+
+<!-- PARTNER TYPES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-label">Ecosystem Partners</div>
+    <h2 class="section-title">Who Can Partner with IHAP?</h2>
+    <p class="section-sub">IHAP works with seven distinct partner categories — each playing a unique role in the reentry ecosystem.</p>
+
+    <div class="partner-grid">
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#EEF2FF">⭐</div>
+        <h3>Sheriffs & Correctional Administrators</h3>
+        <p>You're the first line. When facilities partner with IHAP, incarcerated individuals get access to healthcare navigation <em>before</em> they walk out the door — reducing emergency returns and lowering county costs.</p>
+        <ul>
+          <li>Dedicated IHAP navigator embedded in your facility</li>
+          <li>Zero cost to the facility — fully grant and donor funded</li>
+          <li>Documentation support for county cost savings</li>
+          <li>Direct line to HealthCred enrollment infrastructure</li>
+        </ul>
+        <a href="contact.html?type=facility" class="partner-cta">Partner with IHAP</a>
+      </div>
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#FFF7E6">🤝</div>
+        <h3>Reentry Programs & Inside Volunteers</h3>
+        <p>Chaplains, counselors, jail ministry volunteers, and in-facility programs are already trusted by incarcerated individuals. IHAP training equips you to add healthcare navigation to your existing work — no additional staffing required.</p>
+        <ul>
+          <li>Train-the-trainer certification program</li>
+          <li>Simplified enrollment guides and intake tools</li>
+          <li>Warm handoff referral network at release</li>
+          <li>Co-branded materials for your program</li>
+        </ul>
+        <a href="contact.html?type=partner" class="partner-cta">Get Trained</a>
+      </div>
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#F0FDF4">🌿</div>
+        <h3>Community Navigators</h3>
+        <p>Reentry navigators, case managers, and social workers are the bridge between the facility and the community. IHAP connects you with the tools, referral pathways, and coordination support to close the gap after release.</p>
+        <ul>
+          <li>Referral portal access and case tracking</li>
+          <li>Healthcare enrollment coordination tools</li>
+          <li>Warm handoff from facility-based navigators</li>
+          <li>Training on Medicaid, ACA, and marketplace plans</li>
+        </ul>
+        <a href="contact.html?type=partner" class="partner-cta">Join the Network</a>
+      </div>
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#FFF0F0">🏠</div>
+        <h3>Community Nonprofits & Housing Providers</h3>
+        <p>Housing is the first step. Healthcare is the second. When your clients have coverage, they can access mental health care, addiction treatment, and medications — the supports that keep them housed and stable.</p>
+        <ul>
+          <li>Referral partnership with IHAP navigators</li>
+          <li>Coordinated intake for housing + healthcare needs</li>
+          <li>Access to IHAP resource directory for your clients</li>
+          <li>Co-application for joint grant funding</li>
+        </ul>
+        <a href="contact.html?type=partner" class="partner-cta">Become a Partner</a>
+      </div>
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#F5F0FF">💼</div>
+        <h3>Fair Chance Employers</h3>
+        <p>Hiring justice-involved individuals is good policy and good business. IHAP supports your workforce by ensuring new hires have healthcare coverage from day one — reducing absences, improving retention, and demonstrating your commitment to second chances.</p>
+        <ul>
+          <li>Healthcare onboarding support for new hires</li>
+          <li>Tax credit guidance for fair chance hiring</li>
+          <li>Recognition in IHAP employer directory</li>
+          <li>Workforce reentry consulting</li>
+        </ul>
+        <a href="contact.html?type=employer" class="partner-cta">Hire with IHAP</a>
+      </div>
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#FFF8F0">❤️</div>
+        <h3>Individuals & Families</h3>
+        <p>If someone you love is incarcerated or recently released, IHAP can help. Whether it's understanding their healthcare options, finding a navigator near their facility, or connecting them to community supports — you don't have to figure it out alone.</p>
+        <ul>
+          <li>Family support and resource guide</li>
+          <li>Navigator referrals by county and state</li>
+          <li>Plain-language guide to healthcare at release</li>
+          <li>Peer support network connection</li>
+        </ul>
+        <a href="resources.html" class="partner-cta">Find Resources</a>
+      </div>
+
+      <div class="partner-card">
+        <div class="partner-icon" style="background:#F0F9FF">🏛️</div>
+        <h3>Associations & Advocacy Organizations</h3>
+        <p>Policy changes at the state and federal level are what make sustainable reentry possible. IHAP partners with sheriffs' associations, correctional health organizations, and advocacy groups to advance legislation that saves lives and cuts costs.</p>
+        <ul>
+          <li>Coalition membership and co-advocacy</li>
+          <li>Policy brief contributions and data sharing</li>
+          <li>Joint legislative testimony support</li>
+          <li>Shared research and outcome tracking</li>
+        </ul>
+        <a href="contact.html?type=partner" class="partner-cta">Collaborate with Us</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP TIERS -->
+<section class="membership-section">
+  <div class="membership-inner">
+    <div class="section-label" style="color:var(--gold3)">Individual Membership</div>
+    <h2 class="membership-title">Stand with People Coming Home</h2>
+    <p class="membership-sub">Your annual membership sustains IHAP's navigator network, training programs, and community outreach. Every tier is fully tax-deductible.</p>
+
+    <div class="tier-grid">
+      <div class="tier-card">
+        <div class="tier-badge">Entry</div>
+        <div class="tier-amount">$25</div>
+        <div class="tier-period">per year</div>
+        <div class="tier-name">Friend</div>
+        <ul class="tier-perks">
+          <li>Monthly impact newsletter</li>
+          <li>IHAP digital badge</li>
+          <li>Tax receipt (501c3)</li>
+          <li>Voting membership</li>
+        </ul>
+        <a href="index.html#donate" class="tier-btn">Become a Friend</a>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-badge">Supporter</div>
+        <div class="tier-amount">$100</div>
+        <div class="tier-period">per year</div>
+        <div class="tier-name">Advocate</div>
+        <ul class="tier-perks">
+          <li>All Friend benefits</li>
+          <li>Quarterly impact report</li>
+          <li>Name on IHAP supporters page</li>
+          <li>Invitation to annual summit</li>
+        </ul>
+        <a href="index.html#donate" class="tier-btn">Become an Advocate</a>
+      </div>
+
+      <div class="tier-card featured">
+        <div class="tier-badge">★ Most Popular</div>
+        <div class="tier-amount">$500</div>
+        <div class="tier-period">per year</div>
+        <div class="tier-name">Champion</div>
+        <ul class="tier-perks">
+          <li>All Advocate benefits</li>
+          <li>Named in annual report</li>
+          <li>Private briefing call with team</li>
+          <li>Co-branded social recognition</li>
+          <li>Advisory input on programs</li>
+        </ul>
+        <a href="index.html#donate" class="tier-btn">Become a Champion</a>
+      </div>
+
+      <div class="tier-card">
+        <div class="tier-badge">Leadership</div>
+        <div class="tier-amount">$1,000</div>
+        <div class="tier-period">per year</div>
+        <div class="tier-name">Guardian</div>
+        <ul class="tier-perks">
+          <li>All Champion benefits</li>
+          <li>Founding Guardian recognition</li>
+          <li>Seat on IHAP Advisory Council</li>
+          <li>Direct engagement with board</li>
+          <li>Exclusive impact site visit</li>
+        </ul>
+        <a href="index.html#donate" class="tier-btn">Become a Guardian</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORPORATE GIVING -->
+<section class="corporate-section">
+  <div class="section-inner">
+    <div class="section-label">Corporate Partnership</div>
+    <h2 class="section-title">Corporate Giving Programs</h2>
+    <p class="section-sub">IHAP offers meaningful corporate engagement opportunities for companies committed to criminal justice reform, workforce equity, and social impact.</p>
+
+    <div class="corp-grid">
+      <div class="corp-card">
+        <h3>One-Time Gift</h3>
+        <div class="corp-amount">Any Amount</div>
+        <p>A direct tax-deductible contribution to IHAP's general fund, supporting navigator salaries, training, and community outreach. We'll provide a full gift acknowledgment letter for your records.</p>
+        <a href="index.html#donate" class="partner-cta" style="margin-top:auto">Make a Gift</a>
+      </div>
+
+      <div class="corp-card">
+        <h3>Employee Matching</h3>
+        <div class="corp-amount">2× Impact</div>
+        <p>Match your employees' individual donations to IHAP dollar-for-dollar. We'll manage the matching process, reporting, and acknowledgment. Enrolling IHAP in your giving platform is simple — we'll help.</p>
+        <a href="contact.html?type=corporate" class="partner-cta" style="margin-top:auto">Set Up Matching</a>
+      </div>
+
+      <div class="corp-card">
+        <h3>Program Sponsorship</h3>
+        <div class="corp-amount">$10,000+</div>
+        <p>Sponsor a specific IHAP program — a navigator position, a facility rollout, a state training initiative. Your logo appears on all co-branded materials, press releases, and the IHAP website. Full recognition across all channels.</p>
+        <a href="contact.html?type=corporate" class="partner-cta" style="margin-top:auto">Become a Sponsor</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOLUNTEER CTA -->
+<section class="volunteer-strip">
+  <h2>Not Ready to Donate? There's Still a Role for You.</h2>
+  <p>Volunteer as a navigator, share your story, spread the word on social media, or advocate with your elected officials. Every action matters when lives are on the line.</p>
+  <a href="contact.html?type=volunteer" class="strip-btn">Volunteer with IHAP</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="ihap-logo-nav-white.png" alt="IHAP" class="footer-logo-img">
+      <div>
+        <div class="footer-org">Inmate Health Access Program</div>
+        <div class="footer-tagline">Connecting Justice. Restoring Lives.</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">Our Story</a>
+      <a href="impact.html">Impact</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="get-involved.html">Get Involved</a>
+      <a href="resources.html">Resources</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-legal">
+      <p>IHAP — Inmate Health Access Program is a 501(c)(3) nonprofit organization.<br>
+      EIN: 41-4339110 | 333 N New River Drive, Unit 1802, Fort Lauderdale, FL 33301</p>
+      <p>All donations are tax-deductible to the fullest extent of the law.</p>
+      <p>IHAP is an affiliated nonprofit of HealthCred Care LLC, operating under an arm's-length affiliation agreement. HealthCred provides enrollment infrastructure; IHAP provides community navigation and reentry support. The organizations maintain independent governance and finances.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+</script>
+</body>
+</html>

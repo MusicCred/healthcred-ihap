@@ -709,6 +709,77 @@ footer{
 footer strong{color:rgba(255,255,255,.6)}
 footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 
+/* ── NAV FULL ── */
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-links{display:none;align-items:center;gap:4px}
+.nav-link{
+  font-family:sans-serif;font-size:12px;font-weight:600;
+  color:rgba(255,255,255,.8);padding:8px 10px;border-radius:6px;
+  letter-spacing:.3px;white-space:nowrap;transition:all .2s;
+}
+.nav-link:hover,.nav-link.active{color:#fff;background:rgba(255,255,255,.1)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.hamburger{
+  display:flex;flex-direction:column;justify-content:space-between;
+  width:22px;height:16px;cursor:pointer;padding:0;background:none;border:none;flex-shrink:0;
+}
+.hamburger span{
+  display:block;width:100%;height:2px;background:#fff;border-radius:2px;
+  transition:all .25s;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nav-mobile-menu{
+  display:none;flex-direction:column;
+  background:var(--navy);border-bottom:2px solid var(--gold);
+  position:sticky;top:60px;z-index:199;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.nav-mobile-menu.open{display:flex}
+.nav-mobile-link{
+  font-family:sans-serif;font-size:15px;font-weight:600;
+  color:rgba(255,255,255,.85);padding:16px 20px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  transition:background .15s;
+}
+.nav-mobile-link:hover,.nav-mobile-link.active{background:rgba(255,255,255,.08);color:#fff}
+.nav-mobile-cta{
+  margin:14px 16px 16px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:var(--navy);font-family:sans-serif;font-weight:800;font-size:14px;
+  padding:14px;border-radius:10px;text-align:center;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+@media(min-width:900px){
+  .nav-links{display:flex}
+  .hamburger{display:none}
+}
+
+/* ── MARQUEE TICKER ── */
+.marquee-wrap{
+  background:var(--navy);border-bottom:2px solid var(--gold);
+  overflow:hidden;white-space:nowrap;position:relative;z-index:1;
+  padding:0;
+}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.marquee-track{
+  display:inline-flex;gap:0;
+  animation:marqueeScroll 38s linear infinite;
+}
+.marquee-item{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 28px;
+  font-family:sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  color:rgba(255,255,255,.85);
+  border-right:1px solid rgba(255,255,255,.1);
+  white-space:nowrap;
+}
+.marquee-item .dot{
+  width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;
+}
+
 /* ── SUCCESS OVERLAY ── */
 .success-overlay{display:none;position:fixed;inset:0;background:rgba(8,15,28,.92);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(8px);padding:20px}
 .success-overlay.show{display:flex}
@@ -775,15 +846,62 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 
 <!-- ── NAV ── -->
 <nav>
-  <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img">
-  <button class="nav-cta" onclick="scrollToDonate()">Donate Now</button>
+  <a href="index.html" class="nav-logo">
+    <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img">
+  </a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link">Our Story</a>
+    <a href="impact.html" class="nav-link">Impact</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="get-involved.html" class="nav-link">Get Involved</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="#donate" class="nav-cta">Donate Now</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="about.html" class="nav-mobile-link">Our Story</a>
+  <a href="impact.html" class="nav-mobile-link">Impact</a>
+  <a href="how-it-works.html" class="nav-mobile-link">How It Works</a>
+  <a href="get-involved.html" class="nav-mobile-link">Get Involved</a>
+  <a href="resources.html" class="nav-mobile-link">Resources</a>
+  <a href="contact.html" class="nav-mobile-link">Contact</a>
+  <a href="#donate" class="nav-mobile-cta">Donate Now</a>
+</div>
+
+<!-- ── MARQUEE TICKER ── -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <div class="marquee-item"><span class="dot"></span>9,217 active lives connected</div>
+    <div class="marquee-item"><span class="dot"></span>65+ facility partnerships</div>
+    <div class="marquee-item"><span class="dot"></span>$5.9M documented savings — Lee County FL</div>
+    <div class="marquee-item"><span class="dot"></span>7 million Americans cycle through incarceration each year</div>
+    <div class="marquee-item"><span class="dot"></span>12.7× higher risk of death in first 2 weeks after release</div>
+    <div class="marquee-item"><span class="dot"></span>16% recidivism reduction with healthcare at release</div>
+    <div class="marquee-item"><span class="dot"></span>Florida · Georgia · Alabama · Expanding Nationwide</div>
+    <div class="marquee-item"><span class="dot"></span>EIN 41-4339110 · 501(c)(3) Registered Nonprofit</div>
+    <!-- duplicate for seamless loop -->
+    <div class="marquee-item"><span class="dot"></span>9,217 active lives connected</div>
+    <div class="marquee-item"><span class="dot"></span>65+ facility partnerships</div>
+    <div class="marquee-item"><span class="dot"></span>$5.9M documented savings — Lee County FL</div>
+    <div class="marquee-item"><span class="dot"></span>7 million Americans cycle through incarceration each year</div>
+    <div class="marquee-item"><span class="dot"></span>12.7× higher risk of death in first 2 weeks after release</div>
+    <div class="marquee-item"><span class="dot"></span>16% recidivism reduction with healthcare at release</div>
+    <div class="marquee-item"><span class="dot"></span>Florida · Georgia · Alabama · Expanding Nationwide</div>
+    <div class="marquee-item"><span class="dot"></span>EIN 41-4339110 · 501(c)(3) Registered Nonprofit</div>
+  </div>
+</div>
 
 <!-- ── HERO ── -->
 <div class="hero">
   <img src="ihap-logo-hero.png" alt="IHAP — Inmate Health Access Program" class="hero-logo">
   <div class="hero-eyebrow">★ &nbsp;Healthcare · Reentry · Community&nbsp; ★</div>
-  <h1>Every American deserves<br><em>a second chance at health.</em></h1>
+  <h1>HealthCred opens the door.<br><em>IHAP makes sure they walk through it.</em></h1>
   <p class="hero-sub">IHAP connects justice-involved individuals to real healthcare coverage — before and after release. No cost to them. Life-changing impact.</p>
   <div class="hero-stats">
     <div class="hero-stat">
@@ -1047,10 +1165,31 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 </div>
 
 <!-- ── FOOTER ── -->
-<footer>
-  <strong>Inmate Health Access Program (IHAP)</strong> &nbsp;·&nbsp; A HealthCred Initiative &nbsp;·&nbsp; 501(c)(3) EIN 41-4339110<br>
-  <a href="mailto:chad@healthcred.com">chad@healthcred.com</a> &nbsp;·&nbsp; <a href="tel:+18773904049">(877) 390-4049</a> &nbsp;·&nbsp; <a href="https://healthcred.com">healthcred.com</a><br>
-  © 2025 Inmate Health Access Program. All rights reserved.
+<footer style="background:#080F1C;padding:40px 24px 28px;position:relative;z-index:1">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:20px">
+      <img src="ihap-logo-nav-white.png" alt="IHAP" style="height:36px;width:auto;filter:brightness(0) invert(1);opacity:.6">
+      <div style="text-align:left">
+        <div style="font-family:sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.7)">Inmate Health Access Program</div>
+        <div style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.4)">Connecting Justice. Restoring Lives.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08)">
+      <a href="about.html" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.45);text-decoration:none">Our Story</a>
+      <a href="impact.html" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.45);text-decoration:none">Impact</a>
+      <a href="how-it-works.html" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.45);text-decoration:none">How It Works</a>
+      <a href="get-involved.html" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.45);text-decoration:none">Get Involved</a>
+      <a href="resources.html" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.45);text-decoration:none">Resources</a>
+      <a href="contact.html" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.45);text-decoration:none">Contact</a>
+    </div>
+    <div style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,.3);text-align:center;line-height:2">
+      <strong style="color:rgba(255,255,255,.5)">IHAP — Inmate Health Access Program</strong> &nbsp;·&nbsp; 501(c)(3) EIN: 41-4339110<br>
+      333 N New River Drive, Unit 1802, Fort Lauderdale, FL 33301<br>
+      <a href="mailto:info@ihapusa.org" style="color:rgba(255,255,255,.3)">info@ihapusa.org</a> &nbsp;·&nbsp; <a href="tel:+18773904049" style="color:rgba(255,255,255,.3)">(877) 390-4049</a> &nbsp;·&nbsp; <a href="https://healthcred.com" style="color:rgba(255,255,255,.3)">healthcred.com</a><br>
+      IHAP is an affiliated nonprofit of HealthCred Care LLC, operating under an arm's-length affiliation agreement.<br>
+      © 2026 Inmate Health Access Program. All rights reserved.
+    </div>
+  </div>
 </footer>
 
 <!-- ── SUCCESS OVERLAY ── -->
@@ -1066,6 +1205,11 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 </div>
 
 <script>
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
 let frequency = 'one_time';
 let selectedAmt = 100;
 

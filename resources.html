@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Reentry Resources — IHAP | Inmate Health Access Program</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<meta name="description" content="Reentry resources for Florida, Georgia, Alabama, and nationwide. Housing, healthcare, mental health, job training, legal aid, and recovery support.">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ── PAGE HERO ── */
+.page-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#1A2840 55%,#2D1A47 100%);
+  padding:64px 24px 56px;text-align:center;position:relative;z-index:1;
+}
+.page-hero h1{
+  font-size:clamp(2rem,6vw,3.2rem);color:#fff;font-weight:900;
+  letter-spacing:-.5px;margin-bottom:16px;
+}
+.page-hero p{
+  font-size:clamp(1rem,2.5vw,1.25rem);color:rgba(255,255,255,.8);
+  max-width:680px;margin:0 auto;
+}
+.gold-accent{color:var(--gold3)}
+
+/* ── SEARCH / FILTER ── */
+.filter-bar{
+  background:#fff;padding:28px 24px;
+  border-bottom:1px solid var(--line);
+  position:relative;z-index:5;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+.filter-inner{
+  max-width:900px;margin:0 auto;
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+}
+.filter-label{
+  font-family:sans-serif;font-size:.8rem;font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--gray);
+  flex-shrink:0;
+}
+.filter-btn{
+  font-family:sans-serif;font-size:.8rem;font-weight:600;
+  padding:8px 16px;border-radius:20px;border:1.5px solid var(--line);
+  color:var(--gray);cursor:pointer;transition:all .15s;
+  background:#fff;
+}
+.filter-btn:hover,.filter-btn.active{
+  background:var(--navy);color:#fff;border-color:var(--navy);
+}
+
+/* ── SECTIONS ── */
+.res-section{padding:56px 24px;position:relative;z-index:1}
+.res-section:nth-child(even){background:var(--warm)}
+.res-inner{max-width:1060px;margin:0 auto}
+
+.state-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:36px;
+  padding-bottom:18px;border-bottom:2px solid var(--gold);
+}
+.state-flag{
+  width:48px;height:48px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;background:var(--lav);flex-shrink:0;
+}
+.state-header h2{
+  font-size:clamp(1.4rem,3.5vw,2rem);color:var(--navy);font-weight:900;
+}
+.state-header p{font-size:.95rem;color:var(--gray)}
+
+.cat-label{
+  font-family:sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+}
+.res-grid{
+  display:grid;gap:16px;
+  grid-template-columns:1fr;
+  margin-bottom:32px;
+}
+@media(min-width:600px){.res-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.res-grid{grid-template-columns:repeat(3,1fr)}}
+
+.res-card{
+  background:#fff;border-radius:12px;padding:20px 18px;
+  border:1px solid var(--line);
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+  display:flex;flex-direction:column;gap:8px;
+}
+.res-card-cat{
+  font-family:sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.res-card h4{font-size:.98rem;color:var(--navy);font-weight:800;line-height:1.4}
+.res-card p{font-size:.85rem;color:var(--gray);line-height:1.6}
+.res-card a{
+  font-family:sans-serif;font-size:.78rem;font-weight:700;
+  color:var(--gold);letter-spacing:.3px;
+  margin-top:auto;display:inline-block;padding-top:4px;
+}
+.res-card a:hover{color:var(--navy)}
+
+/* CATEGORY COLORS */
+.cat-health{color:#1d6b8e;background:#E8F4FA;padding:3px 8px;border-radius:4px}
+.cat-housing{color:#7b3a00;background:#FFF0E0;padding:3px 8px;border-radius:4px}
+.cat-mental{color:#5b1e8a;background:#F0E8FF;padding:3px 8px;border-radius:4px}
+.cat-jobs{color:#1a6b30;background:#E8F8EE;padding:3px 8px;border-radius:4px}
+.cat-legal{color:#7a1c1c;background:#FFF0F0;padding:3px 8px;border-radius:4px}
+.cat-recovery{color:#5a4500;background:#FFFBE8;padding:3px 8px;border-radius:4px}
+.cat-family{color:#2c4a7c;background:#EEF3FF;padding:3px 8px;border-radius:4px}
+
+/* ── NATIONAL SECTION ── */
+.national-section{
+  background:linear-gradient(135deg,var(--navy),#1A2840);
+  padding:64px 24px;position:relative;z-index:1;
+}
+.national-grid{
+  display:grid;gap:20px;
+  grid-template-columns:1fr;
+  max-width:1060px;margin:0 auto;
+}
+@media(min-width:640px){.national-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.national-grid{grid-template-columns:repeat(3,1fr)}}
+
+.national-card{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  border-radius:14px;padding:24px 20px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.national-card h4{font-size:1rem;color:#fff;font-weight:800}
+.national-card p{font-size:.87rem;color:rgba(255,255,255,.7);line-height:1.6}
+.national-card a{
+  font-family:sans-serif;font-size:.78rem;font-weight:700;
+  color:var(--gold3);
+}
+
+/* ── HOTLINE STRIP ── */
+.hotline-strip{
+  background:var(--crimson);padding:40px 24px;text-align:center;
+  position:relative;z-index:1;
+}
+.hotline-strip h3{
+  font-size:clamp(1.2rem,3vw,1.8rem);color:#fff;font-weight:900;margin-bottom:10px;
+}
+.hotline-strip p{color:rgba(255,255,255,.85);font-size:.95rem;margin-bottom:20px}
+.hotline-numbers{
+  display:flex;flex-wrap:wrap;gap:16px;justify-content:center;
+}
+.hotline-num{
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+  border-radius:10px;padding:14px 24px;
+  font-family:sans-serif;
+}
+.hotline-num strong{
+  display:block;font-size:1.1rem;color:#fff;font-weight:800;
+}
+.hotline-num span{font-size:.78rem;color:rgba(255,255,255,.7);letter-spacing:.5px}
+
+/* ── NEED HELP BANNER ── */
+.help-banner{
+  background:var(--warm);padding:52px 24px;text-align:center;
+  position:relative;z-index:1;
+}
+.help-banner h2{
+  font-size:clamp(1.3rem,3.5vw,2rem);color:var(--navy);font-weight:900;margin-bottom:12px;
+}
+.help-banner p{
+  font-size:1rem;color:var(--gray);max-width:560px;margin:0 auto 28px;
+}
+.help-btn{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;font-family:sans-serif;font-size:.85rem;
+  font-weight:800;letter-spacing:.5px;text-transform:uppercase;
+  padding:14px 36px;border-radius:10px;display:inline-block;
+  text-decoration:none;transition:all .2s;
+}
+.help-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+</style>
+</head>
+<body>
+
+<!-- FLAG BACKGROUND -->
+<div class="flag-bg"><div class="flag-wave"></div></div>
+
+<!-- PATRIOT STRIPE -->
+<div class="patriot-stripe"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img">
+    <span class="nav-logo-text">IHAP</span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link">Our Story</a>
+    <a href="impact.html" class="nav-link">Impact</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="get-involved.html" class="nav-link">Get Involved</a>
+    <a href="resources.html" class="nav-link active">Resources</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html#donate" class="nav-cta">Donate Now</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="about.html" class="nav-mobile-link">Our Story</a>
+  <a href="impact.html" class="nav-mobile-link">Impact</a>
+  <a href="how-it-works.html" class="nav-mobile-link">How It Works</a>
+  <a href="get-involved.html" class="nav-mobile-link">Get Involved</a>
+  <a href="resources.html" class="nav-mobile-link active">Resources</a>
+  <a href="contact.html" class="nav-mobile-link">Contact</a>
+  <a href="index.html#donate" class="nav-mobile-cta">Donate Now</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="section-label" style="color:var(--gold3)">Reentry Resource Guide</div>
+  <h1>Find Help <span class="gold-accent">Where You Are</span></h1>
+  <p>Whether you're inside, just released, or supporting someone coming home — these resources cover healthcare, housing, jobs, legal aid, and recovery support across Florida, Georgia, Alabama, and the nation.</p>
+</section>
+
+<!-- CRISIS HOTLINES -->
+<div class="hotline-strip">
+  <h3>In Crisis? Call Now.</h3>
+  <p>These lines are free, confidential, and available 24/7.</p>
+  <div class="hotline-numbers">
+    <div class="hotline-num">
+      <strong>988</strong>
+      <span>Suicide & Crisis Lifeline</span>
+    </div>
+    <div class="hotline-num">
+      <strong>1-800-662-4357</strong>
+      <span>SAMHSA Substance Use Helpline</span>
+    </div>
+    <div class="hotline-num">
+      <strong>1-800-799-7233</strong>
+      <span>National Domestic Violence Hotline</span>
+    </div>
+    <div class="hotline-num">
+      <strong>211</strong>
+      <span>Local Social Services (dial from any phone)</span>
+    </div>
+  </div>
+</div>
+
+<!-- FLORIDA -->
+<section class="res-section">
+  <div class="res-inner">
+    <div class="state-header">
+      <div class="state-flag">🌴</div>
+      <div>
+        <h2>Florida</h2>
+        <p>IHAP's primary operating state — 65+ active facility partnerships across FL</p>
+      </div>
+    </div>
+
+    <div class="cat-label">🏥 Healthcare Enrollment</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>HealthCred Care — ACA Enrollment</h4>
+        <p>Free ACA marketplace enrollment for justice-involved individuals. Agents available for facilities and recently released residents across FL.</p>
+        <a href="https://healthcred.com" target="_blank">healthcred.com →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>Florida DCF — Medicaid Application</h4>
+        <p>Apply for Florida Medicaid online through the Department of Children and Families ACCESS portal. Available immediately upon release.</p>
+        <a href="https://www.myflorida.com/accessflorida" target="_blank">MyFlorida ACCESS →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>Florida Community Health Centers</h4>
+        <p>Federally Qualified Health Centers (FQHCs) across FL provide sliding-scale care regardless of insurance status. No one turned away.</p>
+        <a href="https://findahealthcenter.hrsa.gov" target="_blank">Find a Health Center →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">🏠 Housing</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-housing">Housing</span>
+        <h4>Florida Coalition for the Homeless</h4>
+        <p>Statewide network of housing and shelter resources. Warm referrals for people exiting incarceration through member agencies across all FL counties.</p>
+        <a href="https://www.floridahomeless.org" target="_blank">floridahomeless.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-housing">Housing</span>
+        <h4>Reentry Alliance of New York (RANY) — FL Partnerships</h4>
+        <p>Transitional housing placements for returning citizens. Specializes in finding safe housing within 72 hours of release.</p>
+        <a href="contact.html" target="_blank">Contact IHAP for Referral →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-housing">Housing</span>
+        <h4>Lee County Housing Authority — Rapid Rehousing</h4>
+        <p>Rapid rehousing vouchers available for justice-involved individuals with verified need. Accepts referrals from correctional facilities.</p>
+        <a href="https://www.leecountyhousing.org" target="_blank">leecountyhousing.org →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">🧠 Mental Health & Substance Use</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-mental">Mental Health</span>
+        <h4>Henderson Behavioral Health — Broward County</h4>
+        <p>Comprehensive outpatient and residential mental health services. Medicaid accepted. Serves justice-involved population across South Florida.</p>
+        <a href="https://www.hendersonbehavioral.org" target="_blank">hendersonbehavioral.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-recovery">Recovery</span>
+        <h4>Florida Alcohol & Drug Abuse Association (FADAA)</h4>
+        <p>Statewide network of substance use treatment providers. Many offer sliding-scale fees and Medicaid-covered residential treatment.</p>
+        <a href="https://www.fadaa.org" target="_blank">fadaa.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-recovery">Recovery</span>
+        <h4>SAMHSA Treatment Locator</h4>
+        <p>Find addiction treatment facilities near you. Filter by payment type (Medicaid, sliding scale, free). Available in all FL counties.</p>
+        <a href="https://findtreatment.gov" target="_blank">findtreatment.gov →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">💼 Employment & Job Training</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-jobs">Employment</span>
+        <h4>CareerSource Florida</h4>
+        <p>Free job placement, resume assistance, and vocational training across all FL counties. Priority services available for returning citizens.</p>
+        <a href="https://www.careersourceflorida.com" target="_blank">careersourceflorida.com →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-jobs">Employment</span>
+        <h4>Florida Rights Restoration Coalition</h4>
+        <p>Legal restoration of civil rights + employment support. Helps formerly incarcerated Floridians navigate voter registration, licensing, and employment barriers.</p>
+        <a href="https://www.flrrc.com" target="_blank">flrrc.com →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-jobs">Employment</span>
+        <h4>Goodwill Industries of South Florida</h4>
+        <p>Job training, placement, and transitional employment for justice-involved individuals. Free services, no records barrier for most programs.</p>
+        <a href="https://www.goodwillsf.org" target="_blank">goodwillsf.org →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">⚖️ Legal Aid</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-legal">Legal</span>
+        <h4>Legal Aid Service of Broward County</h4>
+        <p>Free civil legal assistance for low-income residents — housing, family, consumer, and reentry record sealing/expungement.</p>
+        <a href="https://www.legalaid.org" target="_blank">legalaid.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-legal">Legal</span>
+        <h4>Florida Commission on Offender Review</h4>
+        <p>Resources for parole, conditional release, and clemency petitions. Understand your post-release conditions and rights.</p>
+        <a href="https://www.fcor.state.fl.us" target="_blank">fcor.state.fl.us →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-legal">Legal</span>
+        <h4>Volunteer Lawyers Project</h4>
+        <p>Pro bono legal help for record expungement and sealing across FL. A clean record opens doors to employment, housing, and professional licensing.</p>
+        <a href="contact.html" target="_blank">Contact IHAP for Referral →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GEORGIA -->
+<section class="res-section" style="background:var(--warm)">
+  <div class="res-inner">
+    <div class="state-header">
+      <div class="state-flag">🍑</div>
+      <div>
+        <h2>Georgia</h2>
+        <p>IHAP operates across multiple GA counties including metro Atlanta and surrounding areas</p>
+      </div>
+    </div>
+
+    <div class="cat-label">🏥 Healthcare Enrollment</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>HealthCred Care — ACA Enrollment (GA)</h4>
+        <p>Free ACA marketplace enrollment for recently released individuals across Georgia. Agents available for facilities and community navigators.</p>
+        <a href="https://healthcred.com" target="_blank">healthcred.com →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>Georgia Gateway — Medicaid & PeachCare</h4>
+        <p>Georgia's online portal for Medicaid, food stamps, and other benefits. Apply the day of release. No waiting period for coverage determination.</p>
+        <a href="https://gateway.ga.gov" target="_blank">gateway.ga.gov →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>Grady Health System — Uninsured Care</h4>
+        <p>Atlanta's primary safety-net hospital. Charity care and sliding-scale services. Medicaid enrollment assistance available on-site.</p>
+        <a href="https://www.gradyhealth.org" target="_blank">gradyhealth.org →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">🏠 Housing & Reentry</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-housing">Housing</span>
+        <h4>Georgia Council on Criminal Justice Reform</h4>
+        <p>State-level resources for transitional housing and supervised release programs. Connects returning citizens to county-level reentry programs.</p>
+        <a href="https://www.georgiacouncil.org" target="_blank">georgiacouncil.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-housing">Housing</span>
+        <h4>Partners for HOME — Atlanta</h4>
+        <p>Rapid rehousing and homelessness prevention for individuals exiting the justice system in the metro Atlanta area.</p>
+        <a href="https://www.partnersforhome.org" target="_blank">partnersforhome.org →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-recovery">Recovery</span>
+        <h4>Georgia Council on Substance Abuse</h4>
+        <p>Recovery coaching, peer support, and connection to treatment for justice-involved individuals across Georgia.</p>
+        <a href="https://www.gcsa.net" target="_blank">gcsa.net →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">💼 Employment</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-jobs">Employment</span>
+        <h4>Georgia Department of Labor — Reentry Services</h4>
+        <p>Vocational rehabilitation, resume assistance, and job placement through GA's WorkSource network. Priority access for formerly incarcerated job seekers.</p>
+        <a href="https://dol.georgia.gov" target="_blank">dol.georgia.gov →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-jobs">Employment</span>
+        <h4>LaAmistad — Atlanta</h4>
+        <p>Workforce development and transitional employment focused on justice-involved women and men in the metro Atlanta area.</p>
+        <a href="contact.html" target="_blank">Contact IHAP for Referral →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-legal">Legal</span>
+        <h4>Georgia Legal Services Program</h4>
+        <p>Free civil legal help statewide — including record restriction (Georgia's expungement process) to remove barriers to jobs and housing.</p>
+        <a href="https://www.glsp.org" target="_blank">glsp.org →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALABAMA -->
+<section class="res-section">
+  <div class="res-inner">
+    <div class="state-header">
+      <div class="state-flag">⭐</div>
+      <div>
+        <h2>Alabama</h2>
+        <p>IHAP expanding across AL with active facility partnerships in multiple counties</p>
+      </div>
+    </div>
+
+    <div class="cat-label">🏥 Healthcare Enrollment</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>HealthCred Care — ACA Enrollment (AL)</h4>
+        <p>Free ACA marketplace enrollment for justice-involved individuals across Alabama. Agents trained in AL marketplace plans.</p>
+        <a href="https://healthcred.com" target="_blank">healthcred.com →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>Alabama Medicaid Agency</h4>
+        <p>Apply for Alabama Medicaid online or by phone. Covers low-income adults and families. Coverage can begin the month you apply.</p>
+        <a href="https://www.medicaid.alabama.gov" target="_blank">medicaid.alabama.gov →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-health">Healthcare</span>
+        <h4>Alabama Primary Health Care Association</h4>
+        <p>Network of community health centers across Alabama providing sliding-scale and free care regardless of insurance status or criminal history.</p>
+        <a href="https://www.alphca.com" target="_blank">alphca.com →</a>
+      </div>
+    </div>
+
+    <div class="cat-label">🏠 Housing & Support</div>
+    <div class="res-grid">
+      <div class="res-card">
+        <span class="res-card-cat cat-housing">Housing</span>
+        <h4>Alabama Reentry Coalition</h4>
+        <p>Statewide coalition coordinating housing, employment, and healthcare resources for people returning from incarceration in Alabama.</p>
+        <a href="contact.html" target="_blank">Contact IHAP for Referral →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-recovery">Recovery</span>
+        <h4>Alabama Department of Mental Health</h4>
+        <p>Outpatient and residential substance use treatment. Sliding scale fees. Specific reentry services available through county mental health centers.</p>
+        <a href="https://www.mh.alabama.gov" target="_blank">mh.alabama.gov →</a>
+      </div>
+      <div class="res-card">
+        <span class="res-card-cat cat-jobs">Employment</span>
+        <h4>Alabama Workforce Council — Second Chance</h4>
+        <p>Workforce development and vocational training prioritizing justice-involved workers. Partners with fair chance employers across the state.</p>
+        <a href="https://www.alabamaworkforce.org" target="_blank">alabamaworkforce.org →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NATIONAL RESOURCES -->
+<section class="national-section">
+  <div class="section-label" style="color:var(--gold3);text-align:center;margin-bottom:12px">
+    Available Nationwide
+  </div>
+  <h2 style="font-size:clamp(1.6rem,4vw,2.4rem);color:#fff;font-weight:900;text-align:center;margin-bottom:12px">
+    National Reentry Resources
+  </h2>
+  <p style="color:rgba(255,255,255,.7);text-align:center;max-width:580px;margin:0 auto 48px;font-size:.98rem">
+    These programs operate in all 50 states and can provide immediate help regardless of where you are.
+  </p>
+
+  <div class="national-grid">
+    <div class="national-card">
+      <span style="font-size:24px">🏛️</span>
+      <h4>Reentry.gov</h4>
+      <p>The federal government's official reentry resource hub. State-by-state guide to benefits, housing, employment, and healthcare after incarceration.</p>
+      <a href="https://www.reentry.gov" target="_blank">reentry.gov →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">💊</span>
+      <h4>Ryan White HIV/AIDS Program</h4>
+      <p>Free HIV care and medications for uninsured individuals, including those recently released. No prior enrollment required in most states.</p>
+      <a href="https://hab.hrsa.gov" target="_blank">hab.hrsa.gov →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">🤝</span>
+      <h4>National Reentry Resource Center</h4>
+      <p>Training, technical assistance, and resources for reentry practitioners, navigators, and justice-involved individuals across all 50 states.</p>
+      <a href="https://nationalreentryresourcecenter.org" target="_blank">nationalreentryresourcecenter.org →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">⚖️</span>
+      <h4>Reentry Council — ABA</h4>
+      <p>The American Bar Association's reentry resource guide covers collateral consequences of conviction in every state — know your rights.</p>
+      <a href="https://www.americanbar.org/reentry" target="_blank">americanbar.org/reentry →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">🧠</span>
+      <h4>Mental Health America</h4>
+      <p>Free online mental health screening, crisis resources, and state-by-state directory of mental health services accessible to formerly incarcerated individuals.</p>
+      <a href="https://www.mhanational.org" target="_blank">mhanational.org →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">👨‍👩‍👧</span>
+      <h4>Children of Incarcerated Parents</h4>
+      <p>Resources for the 10 million children in the US with an incarcerated parent — counseling, family reunification support, and child welfare resources.</p>
+      <a href="https://www.cssp.org" target="_blank">cssp.org →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">🏠</span>
+      <h4>National Alliance to End Homelessness</h4>
+      <p>Rapid rehousing and homelessness prevention resources specifically for justice-involved individuals. State and county finder available online.</p>
+      <a href="https://endhomelessness.org" target="_blank">endhomelessness.org →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">💼</span>
+      <h4>Dave's Killer Bread Foundation</h4>
+      <p>Second chance employment network connecting formerly incarcerated individuals to fair chance employers across the US. Job board and employer directory.</p>
+      <a href="https://www.dkbfoundation.org" target="_blank">dkbfoundation.org →</a>
+    </div>
+
+    <div class="national-card">
+      <span style="font-size:24px">📞</span>
+      <h4>IHAP Navigator Network</h4>
+      <p>IHAP can connect you with a trained navigator in your county or state. Free service for individuals, families, and facilities anywhere IHAP operates.</p>
+      <a href="contact.html">Contact IHAP →</a>
+    </div>
+  </div>
+</section>
+
+<!-- NEED HELP BANNER -->
+<section class="help-banner">
+  <h2>Can't Find What You Need?</h2>
+  <p>IHAP navigators are trained to connect you with the right resources. Whether it's healthcare coverage, housing, or just someone to talk to — reach out. We'll help.</p>
+  <a href="contact.html" class="help-btn">Contact an IHAP Navigator</a>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="ihap-logo-nav-white.png" alt="IHAP" class="footer-logo-img">
+      <div>
+        <div class="footer-org">Inmate Health Access Program</div>
+        <div class="footer-tagline">Connecting Justice. Restoring Lives.</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">Our Story</a>
+      <a href="impact.html">Impact</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="get-involved.html">Get Involved</a>
+      <a href="resources.html">Resources</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-legal">
+      <p>IHAP — Inmate Health Access Program is a 501(c)(3) nonprofit organization.<br>
+      EIN: 41-4339110 | 333 N New River Drive, Unit 1802, Fort Lauderdale, FL 33301</p>
+      <p>All donations are tax-deductible to the fullest extent of the law.</p>
+      <p>Resource listings are provided for informational purposes only. IHAP does not endorse any specific provider and encourages individuals to verify current availability and eligibility directly with each organization.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+</script>
+</body>
+</html>

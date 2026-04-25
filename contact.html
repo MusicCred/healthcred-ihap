@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Contact — IHAP | Inmate Health Access Program</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<meta name="description" content="Contact IHAP — whether you're a facility administrator, a family member, a partner organization, or a funder, we're here to help.">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ── PAGE HERO ── */
+.page-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#1A2840 55%,#2D1A47 100%);
+  padding:64px 24px 56px;text-align:center;position:relative;z-index:1;
+}
+.page-hero h1{
+  font-size:clamp(2rem,6vw,3.2rem);color:#fff;font-weight:900;
+  letter-spacing:-.5px;margin-bottom:16px;
+}
+.page-hero p{
+  font-size:clamp(1rem,2.5vw,1.25rem);color:rgba(255,255,255,.8);
+  max-width:680px;margin:0 auto;
+}
+.gold-accent{color:var(--gold3)}
+
+/* ── CONTACT LAYOUT ── */
+.contact-section{
+  padding:64px 24px;position:relative;z-index:1;
+}
+.contact-inner{
+  max-width:1040px;margin:0 auto;
+  display:grid;gap:48px;
+  grid-template-columns:1fr;
+}
+@media(min-width:800px){.contact-inner{grid-template-columns:1fr 380px}}
+
+/* FORM SIDE */
+.form-card{
+  background:#fff;border-radius:20px;
+  border:1px solid var(--line);
+  box-shadow:0 6px 30px rgba(0,0,0,.08);
+  overflow:hidden;
+}
+.form-header{
+  background:linear-gradient(135deg,var(--navy),#1A2840);
+  padding:28px 32px;
+}
+.form-header h2{font-size:1.4rem;color:#fff;font-weight:900;margin-bottom:6px}
+.form-header p{font-size:.9rem;color:rgba(255,255,255,.7)}
+.form-body{padding:32px}
+
+/* TYPE SELECTOR */
+.type-selector{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px;
+}
+@media(min-width:500px){.type-selector{grid-template-columns:repeat(3,1fr)}}
+
+.type-btn{
+  background:#fff;border:1.5px solid var(--line);
+  border-radius:10px;padding:12px 8px;text-align:center;
+  cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.type-btn:hover{border-color:var(--navy);background:var(--lav)}
+.type-btn.selected{border-color:var(--navy);background:var(--navy);color:#fff}
+.type-btn .type-icon{font-size:20px}
+.type-btn .type-label{
+  font-family:sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.3px;line-height:1.2;
+}
+
+/* FORM FIELDS */
+.field-group{margin-bottom:18px}
+.field-label{
+  display:block;font-family:sans-serif;font-size:.8rem;font-weight:700;
+  color:var(--navy);margin-bottom:7px;letter-spacing:.3px;
+}
+.field-label .req{color:var(--crimson)}
+.field-input{
+  width:100%;padding:13px 16px;border:1.5px solid var(--line);
+  border-radius:10px;font-size:16px;font-family:'Georgia',serif;
+  color:var(--text);background:#fff;
+  transition:border-color .15s,box-shadow .15s;
+  -webkit-appearance:none;appearance:none;
+}
+.field-input:focus{
+  outline:none;border-color:var(--navy);
+  box-shadow:0 0 0 3px rgba(13,27,53,.1);
+}
+textarea.field-input{resize:vertical;min-height:110px;line-height:1.5}
+select.field-input{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M6 8L0 0h12z' fill='%235a5a6a'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+
+.field-row{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:500px){.field-row{grid-template-columns:1fr 1fr}}
+
+.submit-btn{
+  width:100%;background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;font-family:sans-serif;font-size:.9rem;font-weight:800;
+  letter-spacing:.5px;text-transform:uppercase;padding:16px 24px;
+  border-radius:12px;border:none;cursor:pointer;
+  transition:all .2s;margin-top:8px;
+  box-shadow:0 6px 20px rgba(13,27,53,.3);
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,27,53,.4)}
+.submit-btn:active{transform:translateY(0)}
+
+.form-note{
+  font-family:sans-serif;font-size:.75rem;color:var(--gray);
+  text-align:center;margin-top:14px;line-height:1.5;
+}
+
+/* SUCCESS STATE */
+.form-success{
+  display:none;text-align:center;padding:48px 32px;
+}
+.success-icon{font-size:56px;margin-bottom:16px}
+.form-success h3{font-size:1.4rem;color:var(--navy);font-weight:900;margin-bottom:10px}
+.form-success p{font-size:.95rem;color:var(--gray);line-height:1.6}
+
+/* RIGHT SIDE */
+.contact-sidebar{display:flex;flex-direction:column;gap:20px}
+
+.contact-card{
+  background:#fff;border-radius:16px;padding:24px 20px;
+  border:1px solid var(--line);
+  box-shadow:0 3px 14px rgba(0,0,0,.06);
+}
+.contact-card h3{
+  font-size:1rem;color:var(--navy);font-weight:800;
+  margin-bottom:8px;display:flex;align-items:center;gap:8px;
+}
+.contact-card p{font-size:.88rem;color:var(--gray);line-height:1.6;margin-bottom:12px}
+.contact-detail{
+  display:flex;align-items:center;gap:10px;
+  font-family:sans-serif;font-size:.85rem;color:var(--navy);
+  font-weight:600;padding:8px 0;
+  border-bottom:1px solid var(--line);
+}
+.contact-detail:last-child{border-bottom:none}
+.contact-detail a{color:var(--navy);text-decoration:none}
+.contact-detail a:hover{color:var(--gold)}
+
+.response-time{
+  background:var(--lav);border-radius:10px;padding:14px 16px;
+  font-family:sans-serif;font-size:.82rem;color:var(--navy);
+  font-weight:600;margin-top:10px;text-align:center;
+}
+
+/* URGENCY CARD */
+.urgency-card{
+  background:linear-gradient(135deg,var(--crimson),var(--crimson2));
+  border-radius:16px;padding:24px 20px;
+  color:#fff;
+}
+.urgency-card h3{font-size:1rem;font-weight:900;margin-bottom:8px}
+.urgency-card p{font-size:.87rem;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:14px}
+.urgency-phone{
+  font-size:1.4rem;font-weight:900;color:#fff;font-family:sans-serif;
+  display:block;margin-bottom:4px;
+}
+.urgency-sub{font-size:.75rem;color:rgba(255,255,255,.7);font-family:sans-serif}
+
+/* ── LOCATIONS ── */
+.locations-section{
+  background:var(--warm);padding:56px 24px;position:relative;z-index:1;
+}
+.locations-inner{max-width:960px;margin:0 auto}
+.loc-grid{
+  display:grid;gap:20px;
+  grid-template-columns:1fr;
+  margin-top:36px;
+}
+@media(min-width:500px){.loc-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:800px){.loc-grid{grid-template-columns:repeat(3,1fr)}}
+
+.loc-card{
+  background:#fff;border-radius:14px;padding:24px 20px;
+  border-top:4px solid var(--navy);
+  box-shadow:0 3px 14px rgba(0,0,0,.07);
+}
+.loc-state{
+  font-family:sans-serif;font-size:.7rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:8px;
+}
+.loc-card h4{font-size:1rem;color:var(--navy);font-weight:800;margin-bottom:8px}
+.loc-card p{font-size:.85rem;color:var(--gray);line-height:1.6}
+.loc-badge{
+  display:inline-block;
+  background:var(--lav);color:var(--navy);
+  font-family:sans-serif;font-size:.7rem;font-weight:700;
+  letter-spacing:.5px;padding:4px 10px;border-radius:6px;
+  margin-top:10px;
+}
+
+/* section labels/titles shared */
+.section-label{
+  font-family:sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--gold);
+  margin-bottom:10px;text-align:center;
+}
+.section-title{
+  font-size:clamp(1.6rem,4vw,2.4rem);color:var(--navy);font-weight:900;
+  text-align:center;margin-bottom:14px;
+}
+.section-sub{
+  font-size:1rem;color:var(--gray);text-align:center;
+  max-width:600px;margin:0 auto;
+}
+</style>
+</head>
+<body>
+
+<!-- FLAG BACKGROUND -->
+<div class="flag-bg"><div class="flag-wave"></div></div>
+
+<!-- PATRIOT STRIPE -->
+<div class="patriot-stripe"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img">
+    <span class="nav-logo-text">IHAP</span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link">Our Story</a>
+    <a href="impact.html" class="nav-link">Impact</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="get-involved.html" class="nav-link">Get Involved</a>
+    <a href="resources.html" class="nav-link">Resources</a>
+    <a href="contact.html" class="nav-link active">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a href="index.html#donate" class="nav-cta">Donate Now</a>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile-menu" id="mobile-menu">
+  <a href="about.html" class="nav-mobile-link">Our Story</a>
+  <a href="impact.html" class="nav-mobile-link">Impact</a>
+  <a href="how-it-works.html" class="nav-mobile-link">How It Works</a>
+  <a href="get-involved.html" class="nav-mobile-link">Get Involved</a>
+  <a href="resources.html" class="nav-mobile-link">Resources</a>
+  <a href="contact.html" class="nav-mobile-link active">Contact</a>
+  <a href="index.html#donate" class="nav-mobile-cta">Donate Now</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="section-label" style="color:var(--gold3)">We're Here to Help</div>
+  <h1>Get in <span class="gold-accent">Touch</span></h1>
+  <p>Whether you're a facility administrator, a person coming home, a family member, or an organization that wants to partner — IHAP has someone ready to help.</p>
+</section>
+
+<!-- CONTACT FORM + SIDEBAR -->
+<section class="contact-section">
+  <div class="contact-inner">
+
+    <!-- FORM -->
+    <div class="form-card">
+      <div class="form-header">
+        <h2>Send Us a Message</h2>
+        <p>Tell us who you are and how we can help — we'll get back to you within one business day.</p>
+      </div>
+      <div class="form-body" id="form-body">
+
+        <!-- WHO ARE YOU -->
+        <div style="margin-bottom:6px">
+          <div class="field-label" style="margin-bottom:12px">I am a… <span class="req">*</span></div>
+          <div class="type-selector" id="type-selector">
+            <div class="type-btn selected" onclick="selectType(this,'Facility / Jail Administrator')">
+              <div class="type-icon">🏛️</div>
+              <div class="type-label">Facility / Admin</div>
+            </div>
+            <div class="type-btn" onclick="selectType(this,'Partner Organization')">
+              <div class="type-icon">🤝</div>
+              <div class="type-label">Partner Org</div>
+            </div>
+            <div class="type-btn" onclick="selectType(this,'Individual Seeking Help')">
+              <div class="type-icon">🙋</div>
+              <div class="type-label">Seeking Help</div>
+            </div>
+            <div class="type-btn" onclick="selectType(this,'Family Member')">
+              <div class="type-icon">❤️</div>
+              <div class="type-label">Family Member</div>
+            </div>
+            <div class="type-btn" onclick="selectType(this,'Funder / Donor')">
+              <div class="type-icon">💛</div>
+              <div class="type-label">Funder / Donor</div>
+            </div>
+            <div class="type-btn" onclick="selectType(this,'Media / Researcher')">
+              <div class="type-icon">📰</div>
+              <div class="type-label">Media / Research</div>
+            </div>
+          </div>
+          <input type="hidden" id="contact-type" value="Facility / Jail Administrator">
+        </div>
+
+        <form id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label" for="fname">First Name <span class="req">*</span></label>
+              <input type="text" id="fname" class="field-input" placeholder="First name" required autocomplete="given-name">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="lname">Last Name <span class="req">*</span></label>
+              <input type="text" id="lname" class="field-input" placeholder="Last name" required autocomplete="family-name">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="email">Email Address <span class="req">*</span></label>
+            <input type="email" id="email" class="field-input" placeholder="your@email.com" required autocomplete="email">
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="field-input" placeholder="(555) 000-0000" autocomplete="tel">
+          </div>
+
+          <div class="field-group" id="org-field">
+            <label class="field-label" for="org">Organization / Facility Name</label>
+            <input type="text" id="org" class="field-input" placeholder="Organization or facility name">
+          </div>
+
+          <div class="field-group" id="state-field">
+            <label class="field-label" for="state">State</label>
+            <select id="state" class="field-input">
+              <option value="">Select your state</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="AL">Alabama</option>
+              <option value="TX">Texas</option>
+              <option value="other">Other state</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="subject">Subject <span class="req">*</span></label>
+            <select id="subject" class="field-input" required>
+              <option value="">What can we help you with?</option>
+              <optgroup label="Facilities & Partners">
+                <option value="facility-partnership">Facility partnership inquiry</option>
+                <option value="navigator-request">Request a navigator for our facility</option>
+                <option value="training">Navigator training program</option>
+                <option value="corporate-giving">Corporate giving / sponsorship</option>
+              </optgroup>
+              <optgroup label="Individuals & Families">
+                <option value="healthcare-help">Help getting healthcare coverage</option>
+                <option value="reentry-resources">Reentry resources and referrals</option>
+                <option value="family-support">Support for a family member</option>
+                <option value="navigator-connect">Connect me with a navigator</option>
+              </optgroup>
+              <optgroup label="Funders & Media">
+                <option value="donate-info">Donation or membership questions</option>
+                <option value="grant-inquiry">Grant or foundation inquiry</option>
+                <option value="media-inquiry">Media / press inquiry</option>
+                <option value="research">Research collaboration</option>
+              </optgroup>
+              <option value="other">Other / General question</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="message">Message <span class="req">*</span></label>
+            <textarea id="message" class="field-input" placeholder="Tell us what you need or how you'd like to get involved…" required></textarea>
+          </div>
+
+          <div class="field-group" style="display:flex;align-items:flex-start;gap:10px">
+            <input type="checkbox" id="newsletter" style="margin-top:3px;flex-shrink:0;width:16px;height:16px;accent-color:var(--navy)">
+            <label for="newsletter" style="font-family:sans-serif;font-size:.82rem;color:var(--gray);cursor:pointer;line-height:1.5">
+              Sign me up for IHAP's monthly impact newsletter
+            </label>
+          </div>
+
+          <button type="submit" class="submit-btn">Send Message →</button>
+          <p class="form-note">
+            By submitting this form you agree to IHAP's privacy policy. We never share your information with third parties without consent.
+          </p>
+        </form>
+
+        <!-- SUCCESS STATE (hidden) -->
+        <div class="form-success" id="form-success">
+          <div class="success-icon">✅</div>
+          <h3>Message Received</h3>
+          <p>Thank you for reaching out. An IHAP team member will respond within one business day.<br><br>
+          If your matter is urgent, please call us directly at <strong>(877) 390-4049</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="contact-sidebar">
+
+      <!-- DIRECT CONTACT -->
+      <div class="contact-card">
+        <h3>📞 Direct Contact</h3>
+        <p>Prefer to talk? We're available Monday–Friday, 9am–6pm Eastern.</p>
+        <div class="contact-detail">
+          <span>📞</span>
+          <a href="tel:+18773904049">(877) 390-4049</a>
+        </div>
+        <div class="contact-detail">
+          <span>✉️</span>
+          <a href="mailto:info@ihapusa.org">info@ihapusa.org</a>
+        </div>
+        <div class="contact-detail">
+          <span>📍</span>
+          <span>333 N New River Dr, Unit 1802<br>Fort Lauderdale, FL 33301</span>
+        </div>
+        <div class="response-time">
+          ⏱ Typical response time: &lt;24 hours
+        </div>
+      </div>
+
+      <!-- URGENCY CARD -->
+      <div class="urgency-card">
+        <h3>🚨 Immediate Need?</h3>
+        <p>If someone is being released today and needs immediate help with healthcare enrollment or crisis resources, call us now.</p>
+        <span class="urgency-phone">(877) 390-4049</span>
+        <span class="urgency-sub">Mon–Fri 9am–6pm ET · After-hours leave a message</span>
+      </div>
+
+      <!-- FACILITY CARD -->
+      <div class="contact-card">
+        <h3>🏛️ Facility Administrators</h3>
+        <p>IHAP operates at no cost to correctional facilities. If you're a sheriff, jail administrator, or facility director interested in bringing IHAP to your facility, we'd love to connect.</p>
+        <div class="contact-detail">
+          <span>✉️</span>
+          <a href="mailto:partnerships@ihapusa.org">partnerships@ihapusa.org</a>
+        </div>
+      </div>
+
+      <!-- MEDIA CARD -->
+      <div class="contact-card">
+        <h3>📰 Media & Research</h3>
+        <p>IHAP welcomes press inquiries, data requests, and academic research partnerships.</p>
+        <div class="contact-detail">
+          <span>✉️</span>
+          <a href="mailto:press@ihapusa.org">press@ihapusa.org</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- OPERATING LOCATIONS -->
+<section class="locations-section">
+  <div class="locations-inner">
+    <div class="section-label">Where We Operate</div>
+    <h2 class="section-title">IHAP Service Areas</h2>
+    <p class="section-sub">IHAP currently operates in three states with active navigator presence in the communities below.</p>
+
+    <div class="loc-grid">
+      <div class="loc-card">
+        <div class="loc-state">Florida</div>
+        <h4>South Florida Hub</h4>
+        <p>Broward, Miami-Dade, Palm Beach counties — active navigators, direct facility partnerships, community reentry programs.</p>
+        <span class="loc-badge">Primary HQ</span>
+      </div>
+      <div class="loc-card">
+        <div class="loc-state">Florida</div>
+        <h4>Southwest Florida</h4>
+        <p>Lee, Collier, Charlotte, Sarasota counties — including Lee County, site of IHAP's landmark $5.9M documented savings program.</p>
+        <span class="loc-badge">Active</span>
+      </div>
+      <div class="loc-card">
+        <div class="loc-state">Florida</div>
+        <h4>North Central Florida</h4>
+        <p>Alachua, Marion, Citrus, Levy counties — rural Florida facility partnerships serving underserved rural populations.</p>
+        <span class="loc-badge">Active</span>
+      </div>
+      <div class="loc-card">
+        <div class="loc-state">Georgia</div>
+        <h4>Metro Atlanta</h4>
+        <p>Fulton, DeKalb, Gwinnett, Clayton counties — urban reentry programming and navigator network expanding across metro GA.</p>
+        <span class="loc-badge">Active</span>
+      </div>
+      <div class="loc-card">
+        <div class="loc-state">Alabama</div>
+        <h4>North Alabama</h4>
+        <p>Jefferson, Madison, Morgan, Etowah counties — facility partnerships and community navigator presence in expansion phase.</p>
+        <span class="loc-badge">Expanding</span>
+      </div>
+      <div class="loc-card">
+        <div class="loc-state">Coming Soon</div>
+        <h4>Texas Expansion</h4>
+        <p>IHAP is preparing for a major Texas expansion. With 7M+ justice-involved individuals nationally and TX among the highest volume states, TX represents our largest near-term opportunity.</p>
+        <span class="loc-badge">2026 Target</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="ihap-logo-nav-white.png" alt="IHAP" class="footer-logo-img">
+      <div>
+        <div class="footer-org">Inmate Health Access Program</div>
+        <div class="footer-tagline">Connecting Justice. Restoring Lives.</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="about.html">Our Story</a>
+      <a href="impact.html">Impact</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="get-involved.html">Get Involved</a>
+      <a href="resources.html">Resources</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-legal">
+      <p>IHAP — Inmate Health Access Program is a 501(c)(3) nonprofit organization.<br>
+      EIN: 41-4339110 | 333 N New River Drive, Unit 1802, Fort Lauderdale, FL 33301</p>
+      <p>All donations are tax-deductible to the fullest extent of the law.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleMenu(){
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+function selectType(el, typeVal){
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('contact-type').value = typeVal;
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+  const form = document.getElementById('contact-form');
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value;
+  const message = document.getElementById('message').value.trim();
+
+  if(!fname||!email||!subject||!message){
+    alert('Please fill in all required fields.');
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  // Hide form, show success
+  form.style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+
+// Pre-select type from URL param
+(function(){
+  const p=new URLSearchParams(window.location.search).get('type');
+  if(!p)return;
+  const map={
+    facility:'Facility / Jail Administrator',
+    partner:'Partner Organization',
+    individual:'Individual Seeking Help',
+    family:'Family Member',
+    funder:'Funder / Donor',
+    corporate:'Funder / Donor',
+    employer:'Partner Organization',
+    volunteer:'Partner Organization',
+    media:'Media / Researcher'
+  };
+  const val=map[p];
+  if(!val)return;
+  document.querySelectorAll('.type-btn').forEach(b=>{
+    if(b.querySelector('.type-label')){
+      const lbl=b.querySelector('.type-label').textContent.trim();
+      b.classList.remove('selected');
+      // match by type value
+      const btnTypes={'Facility / Admin':'Facility / Jail Administrator','Partner Org':'Partner Organization','Seeking Help':'Individual Seeking Help','Family Member':'Family Member','Funder / Donor':'Funder / Donor','Media / Research':'Media / Researcher'};
+      if(btnTypes[lbl]===val)b.classList.add('selected');
+    }
+  });
+  document.getElementById('contact-type').value=val;
+})();
+</script>
+</body>
+</html>
