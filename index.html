@@ -1387,21 +1387,27 @@ function fundRemainder() {
 }
 function checkStripeReturn() {
   const params = new URLSearchParams(window.location.search);
-  const sessionId = params.get('session_id');
-  const amountCents = params.get('amount');
-  if (sessionId && amountCents) {
-    const donatedDollars = parseInt(amountCents) / 100;
-      addToMonthRaised(donatedDollars); // persist to this month's running total
-    const formatted = donatedDollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const donated = params.get('donated');
+  if (donated === 'true') {
+    // Retrieve amount stored before redirect (Payment Links don't pass amount back in URL)
+    const pendingAmt  = parseFloat(localStorage.getItem('ihap_pending_amount') || '0');
+    const pendingFreq = localStorage.getItem('ihap_pending_freq') || 'one_time';
+    localStorage.removeItem('ihap_pending_amount');
+    localStorage.removeItem('ihap_pending_freq');
 
-    // Show success receipt
+    const donatedDollars = pendingAmt > 0 ? pendingAmt : 0;
+    if (donatedDollars > 0) addToMonthRaised(donatedDollars);
+
+    const formatted = donatedDollars > 0
+      ? donatedDollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+      : 'Your gift';
+    const typeLabel = pendingFreq === 'monthly' ? 'Monthly recurring gift' : 'One-time gift';
+
     document.getElementById('success-receipt').innerHTML =
-      `<strong>Amount:</strong> ${formatted}<br><strong>Type:</strong> One-time gift<br><strong>Status:</strong> Confirmed ✓`;
+      `<strong>Amount:</strong> ${formatted}<br><strong>Type:</strong> ${typeLabel}<br><strong>Status:</strong> Confirmed ✓`;
     document.getElementById('success-overlay').classList.add('show');
 
-    // Live-update progress bar + remainder banner with this donation
-    updateProgressWithDonation(donatedDollars);
-
+    if (donatedDollars > 0) updateProgressWithDonation(donatedDollars);
     window.history.replaceState({}, '', '/');
   }
 }
@@ -1445,37 +1451,49 @@ function updateProgressWithDonation(donatedAmount) {
     document.getElementById('remainder-btn').textContent = `Fund ${remFmt} →`;
   }
 }
-async function processDonation() {
+// ── STRIPE PAYMENT LINKS ──────────────────────────────────────────────────
+// One-time: customer sets any amount (prefilled from our form via ?prefilled_amount=)
+// Monthly: fixed tiers — donor is routed to the right link based on amount selected
+const STRIPE_LINKS = {
+  one_time: 'https://buy.stripe.com/test_00w9ATe41dLE8vt1yf4ko04',
+  monthly: {
+    10:  'https://buy.stripe.com/test_eVq8wP7FD7ngbHFfp54ko03',
+    25:  'https://buy.stripe.com/test_5kQ4gz4tr5f8eTR90H4ko01',
+    50:  'https://buy.stripe.com/test_dRmaEX9NL7ngh1Z5Ov4ko02',
+    100: 'https://buy.stripe.com/test_9B67sLgc97ng8vt90H4ko00'
+  }
+};
+
+function processDonation() {
   const amt   = selectedAmt;
   const email = document.getElementById('email').value.trim();
   const fname = document.getElementById('fname').value.trim();
-  const lname = document.getElementById('lname').value.trim();
-  if (!amt || amt < 1) return alert('Please select or enter a donation amount.');
-  if (!email || !email.includes('@')) return alert('Please enter a valid email address for your tax receipt.');
-  if (!fname) return alert('Please enter your first name.');
-  const isCorp = document.getElementById('corp-check').checked;
-  const orgName = isCorp ? document.getElementById('org-name').value.trim() : '';
+  if (!amt || amt < 1) { alert('Please select or enter a donation amount.'); return; }
+  if (!email || !email.includes('@')) { alert('Please enter a valid email for your tax receipt.'); return; }
+  if (!fname) { alert('Please enter your first name.'); return; }
+
   const btn = document.getElementById('donate-btn');
-  btn.textContent = 'Processing...';
+  btn.textContent = 'Redirecting to Stripe...';
   btn.disabled = true;
-  try {
-    const payload = {
-      amount: Math.round(amt * 100), currency: 'usd', frequency, email,
-      firstName: fname, lastName: lname, orgName,
-      contactName:  isCorp ? document.getElementById('contact-name').value.trim() : '',
-      contactTitle: isCorp ? document.getElementById('contact-title').value.trim() : '',
-      companyEin:   isCorp ? document.getElementById('company-ein').value.trim()  : '',
-      successUrl: window.location.origin + '/?session_id={CHECKOUT_SESSION_ID}&amount=' + Math.round(amt * 100),
-      cancelUrl:  window.location.origin + '/#donate'
-    };
-    const res  = await fetch('/create-checkout', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-    const data = await res.json();
-    if (data.url) { window.location.href = data.url; }
-    else { throw new Error(data.error || 'Checkout session creation failed.'); }
-  } catch(err) {
-    alert('Something went wrong: ' + err.message + '\n\nPlease try again or email chad@healthcred.com.');
-    updateBtn();
+
+  // Store amount so we can update progress bar on return
+  localStorage.setItem('ihap_pending_amount', amt);
+  localStorage.setItem('ihap_pending_freq', frequency);
+
+  let url;
+  if (frequency === 'one_time') {
+    // Pass pre-filled amount in cents — donor can adjust on Stripe page
+    url = STRIPE_LINKS.one_time + '?prefilled_amount=' + Math.round(amt * 100)
+        + '&prefilled_email=' + encodeURIComponent(email);
+  } else {
+    // Monthly: find closest tier (10, 25, 50, 100)
+    const tiers = [10, 25, 50, 100];
+    const closest = tiers.reduce((a, b) => Math.abs(b - amt) < Math.abs(a - amt) ? b : a);
+    url = STRIPE_LINKS.monthly[closest]
+        + '?prefilled_email=' + encodeURIComponent(email);
   }
+
+  window.location.href = url;
 }
 document.addEventListener('DOMContentLoaded', () => {
   initProgress();
