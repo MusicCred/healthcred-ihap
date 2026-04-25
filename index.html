@@ -1385,49 +1385,106 @@ function fundRemainder() {
   setTimeout(() => { box.style.boxShadow = ''; }, 2000);
   document.getElementById('donate').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-function showDonationToast(amountStr) {
-  // Remove any existing toast
+// ── SOCIAL PROOF DONATION TICKER ─────────────────────────────────────────────
+// Runs continuously all month. Shows real donation on return from Stripe,
+// then cycles through simulated donor notifications every 45–90 seconds.
+
+const TICKER_NAMES   = ['Marcus','Denise','Carlos','Yvette','James','Patricia','Derek','Latoya',
+                         'Robert','Sandra','Kevin','Angela','Michael','Tamara','Gregory','Aisha',
+                         'William','Claudia','Anthony','Renee','David','Monique','Brian','Crystal'];
+const TICKER_AMOUNTS = [25, 50, 100, 150, 200, 250, 500, 1000];
+const TICKER_LOCS    = ['Tampa, FL','Atlanta, GA','Fort Lauderdale, FL','Mobile, AL',
+                         'Miami, FL','Savannah, GA','Birmingham, AL','Orlando, FL',
+                         'Jacksonville, FL','Augusta, GA','Tallahassee, FL','Huntsville, AL'];
+
+function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function showDonationToast(amountStr, isOwn) {
   const existing = document.getElementById('donation-toast');
-  if (existing) existing.remove();
+  if (existing) dismissToast(existing, true);
 
   const toast = document.createElement('div');
   toast.id = 'donation-toast';
-  toast.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px">
-      <span style="font-size:1.4rem">🎉</span>
-      <div>
-        <div style="font-weight:800;font-size:.92rem;color:#0D3320">Thank you for your gift!</div>
-        <div style="font-size:.8rem;color:#555;margin-top:2px">Your donation of <strong>${amountStr}</strong> just came through.</div>
-      </div>
-    </div>`;
+
+  if (isOwn) {
+    toast.innerHTML = `
+      <div style="display:flex;align-items:center;gap:11px">
+        <span style="font-size:1.5rem">🎉</span>
+        <div>
+          <div style="font-weight:800;font-size:.93rem;color:#0D3320">Thank you for your gift!</div>
+          <div style="font-size:.8rem;color:#555;margin-top:2px">Your donation of <strong>${amountStr}</strong> just came through.</div>
+        </div>
+        <span id="toast-close" style="margin-left:6px;font-size:1rem;cursor:pointer;color:#aaa;line-height:1">✕</span>
+      </div>`;
+  } else {
+    const name = pickRandom(TICKER_NAMES);
+    const loc  = pickRandom(TICKER_LOCS);
+    toast.innerHTML = `
+      <div style="display:flex;align-items:center;gap:11px">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0D3320,#B8920A);
+             display:flex;align-items:center;justify-content:center;flex-shrink:0;
+             font-weight:900;font-size:.9rem;color:#fff">${name[0]}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800;font-size:.88rem;color:#0D3320">${name} donated <span style="color:#B8920A">${amountStr}</span></div>
+          <div style="font-size:.74rem;color:#888;margin-top:1px">${loc} · just now</div>
+        </div>
+        <span id="toast-close" style="margin-left:4px;font-size:1rem;cursor:pointer;color:#bbb;line-height:1">✕</span>
+      </div>`;
+  }
+
   toast.style.cssText = `
-    position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);
-    background:#fff;border:1.5px solid #2ecc71;border-radius:14px;
-    padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,.18);
+    position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);
+    background:#fff;border:1.5px solid #d4edda;border-radius:14px;
+    padding:13px 18px;box-shadow:0 8px 32px rgba(0,0,0,.15);
     z-index:9999;opacity:0;transition:all .45s cubic-bezier(.22,1,.36,1);
-    min-width:280px;max-width:90vw;cursor:pointer;`;
+    min-width:290px;max-width:92vw;`;
+
   document.body.appendChild(toast);
 
-  // Animate in
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateX(-50%) translateY(0)';
-    });
-  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+  }));
 
-  // Click to dismiss early
-  toast.addEventListener('click', () => dismissToast(toast));
+  const closeBtn = toast.querySelector('#toast-close');
+  if (closeBtn) closeBtn.addEventListener('click', (e) => { e.stopPropagation(); dismissToast(toast); });
 
-  // Auto-dismiss after 6 seconds
-  setTimeout(() => dismissToast(toast), 6000);
+  const delay = isOwn ? 8000 : 6000;
+  const timer = setTimeout(() => dismissToast(toast), delay);
+  toast._timer = timer;
 }
 
-function dismissToast(toast) {
+function dismissToast(toast, immediate) {
+  if (toast._timer) clearTimeout(toast._timer);
   toast.style.opacity = '0';
-  toast.style.transform = 'translateX(-50%) translateY(80px)';
-  setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 450);
+  toast.style.transform = 'translateX(-50%) translateY(100px)';
+  const wait = immediate ? 0 : 450;
+  setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, wait);
 }
+
+function startTickerLoop() {
+  // Check if we're still in the same month — if not, stop
+  function isMonthActive() {
+    const now = new Date();
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+    return now <= endOfMonth;
+  }
+
+  function showNextTick() {
+    if (!isMonthActive()) return; // month rolled over — stop
+    const amt = pickRandom(TICKER_AMOUNTS);
+    const fmt = '$' + amt.toLocaleString();
+    showDonationToast(fmt, false);
+    // Next tick: random 45–90 seconds
+    const delay = 45000 + Math.random() * 45000;
+    setTimeout(showNextTick, delay);
+  }
+
+  // First tick: 12–20 seconds after page load (feels organic, not instant)
+  const firstDelay = 12000 + Math.random() * 8000;
+  setTimeout(showNextTick, firstDelay);
+}
+
 
 function checkStripeReturn() {
   const params = new URLSearchParams(window.location.search);
@@ -1453,7 +1510,7 @@ function checkStripeReturn() {
 
     if (donatedDollars > 0) {
       updateProgressWithDonation(donatedDollars);
-      showDonationToast(formatted);
+      showDonationToast(formatted, true);
     }
     window.history.replaceState({}, '', '/');
   }
@@ -1545,6 +1602,7 @@ function processDonation() {
 document.addEventListener('DOMContentLoaded', () => {
   initProgress();
   checkStripeReturn();
+  startTickerLoop();
 });
 </script>
 </body>
