@@ -1279,11 +1279,17 @@ function onCustomInput(input) {
 function updateBtn() {
   const btn = document.getElementById('donate-btn');
   const freq = frequency === 'monthly' ? '/mo' : '';
-  if (selectedAmt > 0) {
+  if (selectedAmt >= 10001) {
+    btn.textContent = `Wire $${selectedAmt.toLocaleString()} — See Instructions ›`;
+    btn.style.background = 'linear-gradient(135deg,#0D3320,#1a5c38)';
+    btn.disabled = false;
+  } else if (selectedAmt > 0) {
     btn.textContent = `Donate $${selectedAmt.toLocaleString()}${freq} Now ›`;
+    btn.style.background = '';
     btn.disabled = false;
   } else {
     btn.textContent = 'Enter an amount above';
+    btn.style.background = '';
     btn.disabled = true;
   }
 }
@@ -1568,6 +1574,95 @@ const STRIPE_LINKS = {
   }
 };
 
+// ── WIRE TRANSFER MODAL ───────────────────────────────────────────────────────
+function showWireModal(fname, email, amt) {
+  const existing = document.getElementById('wire-modal');
+  if (existing) existing.remove();
+
+  const fmtAmt = '$' + amt.toLocaleString();
+  const ref    = fname.replace(/[^a-zA-Z0-9 ]/g, '') + ' IHAP Gift';
+
+  const modal = document.createElement('div');
+  modal.id = 'wire-modal';
+  modal.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;
+    display:flex;align-items:center;justify-content:center;padding:20px;`;
+
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:18px;max-width:520px;width:100%;
+         box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;">
+
+      <!-- Header -->
+      <div style="background:linear-gradient(135deg,#0D3320,#1a5c38);padding:22px 28px 18px;position:relative">
+        <div style="font-family:sans-serif;font-size:1.15rem;font-weight:900;color:#fff">
+          Wire Transfer Instructions
+        </div>
+        <div style="font-family:sans-serif;font-size:.85rem;color:rgba(255,255,255,.7);margin-top:4px">
+          For gifts over $10,000 — tax-deductible under EIN 41-4339110
+        </div>
+        <button onclick="document.getElementById('wire-modal').remove()"
+          style="position:absolute;top:16px;right:20px;background:rgba(255,255,255,.15);border:none;
+                 border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:1rem;color:#fff;
+                 display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+
+      <!-- Amount confirm -->
+      <div style="background:#f6fdf8;border-bottom:1px solid #e0ede4;padding:14px 28px;
+           display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.3rem">💚</span>
+        <span style="font-family:sans-serif;font-size:.9rem;color:#0D3320;font-weight:700">
+          Gift Amount: ${fmtAmt}
+        </span>
+      </div>
+
+      <!-- Wire details -->
+      <div style="padding:24px 28px">
+        <table style="width:100%;border-collapse:collapse;font-family:sans-serif;font-size:.88rem">
+          ${wireRow('Bank', 'Truist Bank')}
+          ${wireRow('Account Name', 'Inmate Health Access Program (IHAP)')}
+          ${wireRow('Routing Number', '<span style="color:#B8920A;font-weight:700">Available Monday, Apr 28</span>')}
+          ${wireRow('Account Number', '<span style="color:#B8920A;font-weight:700">Available Monday, Apr 28</span>')}
+          ${wireRow('Reference / Memo', `<strong>${ref}</strong>`)}
+        </table>
+
+        <div style="margin-top:18px;padding:14px;background:#fff8e8;border-radius:10px;
+             border:1px solid #f0d88a;font-family:sans-serif;font-size:.82rem;color:#7a5a00;line-height:1.6">
+          📧 After initiating your wire, email <a href="mailto:info@ihapusa.org" style="color:#B8920A;font-weight:700">info@ihapusa.org</a>
+          with your name and gift amount. We'll send your official tax receipt within 24 hours.
+        </div>
+
+        <div style="margin-top:14px;font-family:sans-serif;font-size:.76rem;color:#aaa;text-align:center">
+          IHAP is a 501(c)(3) public charity · EIN 41-4339110 · Gifts are tax-deductible to the full extent of the law
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div style="padding:0 28px 22px;display:flex;gap:10px">
+        <a href="mailto:info@ihapusa.org?subject=Wire%20Transfer%20Gift%20–%20${encodeURIComponent(fmtAmt)}&body=Hi%2C%0A%0AI%20am%20planning%20a%20wire%20transfer%20gift%20of%20${encodeURIComponent(fmtAmt)}%20to%20IHAP.%20Please%20send%20me%20the%20wire%20instructions%20and%20confirm%20receipt.%0A%0AName%3A%20${encodeURIComponent(fname)}%0AEmail%3A%20${encodeURIComponent(email)}"
+           style="flex:1;background:linear-gradient(135deg,#0D3320,#1a5c38);color:#fff;
+                  border-radius:10px;padding:13px;text-align:center;text-decoration:none;
+                  font-family:sans-serif;font-weight:800;font-size:.9rem;">
+          Email Us to Confirm →
+        </a>
+        <button onclick="document.getElementById('wire-modal').remove()"
+          style="background:#f0f0f0;border:none;border-radius:10px;padding:13px 18px;
+                 font-family:sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;color:#555">
+          Close
+        </button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+}
+
+function wireRow(label, val) {
+  return `<tr>
+    <td style="padding:9px 0;border-bottom:1px solid #f0f0f0;color:#888;width:38%;vertical-align:top">${label}</td>
+    <td style="padding:9px 0;border-bottom:1px solid #f0f0f0;color:#1a1a1a;font-weight:600">${val}</td>
+  </tr>`;
+}
+
 function processDonation() {
   const amt   = selectedAmt;
   const email = document.getElementById('email').value.trim();
@@ -1575,6 +1670,12 @@ function processDonation() {
   if (!amt || amt < 1) { alert('Please select or enter a donation amount.'); return; }
   if (!email || !email.includes('@')) { alert('Please enter a valid email for your tax receipt.'); return; }
   if (!fname) { alert('Please enter your first name.'); return; }
+
+  // Wire transfer threshold
+  if (amt >= 10001) {
+    showWireModal(fname, email, amt);
+    return;
+  }
 
   const btn = document.getElementById('donate-btn');
   btn.textContent = 'Redirecting to Stripe...';
