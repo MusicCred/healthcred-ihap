@@ -1069,6 +1069,31 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
       </div>
     </div>
 
+    <!-- Fund the Remainder -->
+    <div id="remainder-card" style="
+      background:linear-gradient(135deg,#1a0a0a,#2D0A0A);
+      border:2px solid var(--gold);
+      border-radius:14px;padding:20px 22px;margin-bottom:20px;
+      display:flex;align-items:center;justify-content:space-between;
+      gap:16px;flex-wrap:wrap;
+      box-shadow:0 6px 24px rgba(184,146,10,.2);
+    ">
+      <div>
+        <div style="font-family:sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold3);margin-bottom:5px">🏆 Complete the Goal</div>
+        <div style="font-family:sans-serif;font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:4px" id="remainder-headline">Fund the remaining $50,000</div>
+        <div style="font-family:sans-serif;font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.4">One gift. Full goal. 100% tax-deductible. Your name on every communication we send announcing this milestone.</div>
+      </div>
+      <button onclick="fundRemainder()" style="
+        background:linear-gradient(135deg,var(--gold),var(--gold2));
+        color:var(--navy);font-family:sans-serif;font-weight:900;
+        font-size:.82rem;letter-spacing:.5px;text-transform:uppercase;
+        padding:13px 22px;border-radius:10px;border:none;cursor:pointer;
+        box-shadow:0 4px 16px rgba(184,146,10,.5);
+        white-space:nowrap;flex-shrink:0;min-height:48px;
+        transition:all .2s;
+      " id="remainder-btn">Fund It All →</button>
+    </div>
+
     <!-- Donate box -->
     <div class="donate-box">
       <div class="freq-toggle">
@@ -1264,14 +1289,47 @@ function toggleCorp(chk) {
 function scrollToDonate() {
   document.getElementById('donate').scrollIntoView({ behavior: 'smooth' });
 }
+const GOAL = 50000;
+const RAISED = 0; // update this when donations come in
+
 function initProgress() {
-  const raised = 0, goal = 50000, donors = 0;
+  const raised = RAISED, goal = GOAL, donors = 0;
   const pct = Math.min((raised / goal) * 100, 100);
+  const remaining = Math.max(goal - raised, 0);
+
   document.getElementById('progress-raised').textContent = raised > 0 ? '$' + raised.toLocaleString() + ' raised' : 'Be first — every dollar counts';
   document.getElementById('progress-goal').textContent = 'of $' + goal.toLocaleString() + ' goal';
   document.getElementById('progress-donors').textContent = donors > 0 ? donors + ' donors so far' : 'Be the first to give';
   document.getElementById('progress-pct').textContent = pct.toFixed(0) + '% to goal';
   setTimeout(() => { document.getElementById('progress-fill').style.width = pct + '%'; }, 300);
+
+  // Update remainder card
+  if (remaining <= 0) {
+    document.getElementById('remainder-card').style.display = 'none';
+  } else {
+    document.getElementById('remainder-headline').textContent = 'Fund the remaining $' + remaining.toLocaleString();
+    document.getElementById('remainder-btn').textContent = 'Fund $' + remaining.toLocaleString() + ' →';
+  }
+}
+
+function fundRemainder() {
+  const remaining = Math.max(GOAL - RAISED, 0);
+  if (remaining <= 0) return;
+
+  // Clear preset selections
+  document.querySelectorAll('.amt-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('custom-amt').value = remaining;
+  selectedAmt = remaining;
+  // Switch to one-time
+  setFreq('one_time');
+  updateBtn();
+
+  // Scroll to form and highlight
+  const box = document.querySelector('.donate-box');
+  box.style.transition = 'box-shadow .4s';
+  box.style.boxShadow = '0 0 0 3px #B8920A, 0 12px 40px rgba(184,146,10,.3)';
+  setTimeout(() => { box.style.boxShadow = ''; }, 2000);
+  document.getElementById('donate').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 function checkStripeReturn() {
   const params = new URLSearchParams(window.location.search);
