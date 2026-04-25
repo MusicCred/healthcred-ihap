@@ -36,7 +36,7 @@ a{color:inherit;text-decoration:none}
 
 /* ── NAV ── */
 nav{background:linear-gradient(90deg,var(--navy) 0%,#1A2840 60%,var(--purple) 100%);padding:0 48px;display:flex;align-items:center;justify-content:space-between;height:68px;position:sticky;top:0;z-index:200;border-bottom:2px solid var(--gold);box-shadow:0 2px 20px rgba(0,0,0,.35)}
-.nav-logo-img{height:42px;width:auto;display:block}
+.nav-logo-img{height:48px;width:auto;display:block;border-radius:50%}
 .nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-family:sans-serif;font-weight:800;font-size:13px;padding:11px 26px;border-radius:8px;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;border:none;transition:all .25s;box-shadow:0 4px 14px rgba(184,146,10,.4)}
 .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(184,146,10,.6)}
 
@@ -44,7 +44,7 @@ nav{background:linear-gradient(90deg,var(--navy) 0%,#1A2840 60%,var(--purple) 10
 .hero{background:linear-gradient(160deg,#FFFFFF 0%,#FAFAF7 50%,#F5F0E8 100%);text-align:center;padding:72px 48px 80px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;top:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(184,146,10,.05),transparent 70%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(13,27,53,.04),transparent 70%);pointer-events:none}
-.hero-logo{width:320px;max-width:85vw;height:auto;display:block;margin:0 auto 44px}
+.hero-logo{width:420px;max-width:90vw;height:auto;display:block;margin:0 auto 44px;border-radius:12px}
 .hero-eyebrow{font-family:sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;font-weight:700;display:inline-flex;align-items:center;gap:10px}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:inline-block;width:24px;height:2px;background:var(--gold);border-radius:1px}
 .hero h1{font-size:clamp(34px,5.5vw,68px);font-weight:900;line-height:1.08;max-width:900px;margin:0 auto 24px;color:var(--navy);letter-spacing:-1px}
@@ -179,7 +179,7 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 
 <!-- ── NAV ── -->
 <nav>
-  <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img" style="border-radius:6px">
+  <img src="ihap-logo-nav-white.png" alt="IHAP" class="nav-logo-img">
   <button class="nav-cta" onclick="scrollToDonate()">Donate Now</button>
 </nav>
 
