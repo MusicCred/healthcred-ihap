@@ -132,11 +132,10 @@ nav{
   overflow:hidden;
 }
 .hero-logo{
-  width:112px;
-  margin:0 auto 28px;
-  transform:rotate(-3deg);
-  filter:drop-shadow(0 3px 14px rgba(13,27,53,.3));
-  opacity:.93;
+  width:min(340px,80vw);
+  margin:0 auto 32px;
+  filter:drop-shadow(0 4px 18px rgba(13,27,53,.18));
+  opacity:1;
 }
 .hero-eyebrow{
   font-family:sans-serif;
@@ -823,7 +822,7 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 @media(min-width:1024px){
   nav{padding:0 56px}
   .hero{padding:80px 56px 88px}
-  .hero-logo{width:420px}
+  .hero-logo{width:400px}
   .story-strip{padding:72px 56px}
   .donate-section{padding:88px 40px}
   .trust-band{padding:56px 40px}
@@ -902,7 +901,7 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
 
 <!-- ── HERO ── -->
 <div class="hero">
-  <img src="ihap-logo-nav-white.png" alt="IHAP — Inmate Health Access Program" class="hero-logo">
+  <img src="ihap-logo-hero.png" alt="IHAP — Inmate Health Access Program" class="hero-logo">
   <div class="hero-eyebrow">★ &nbsp;Healthcare · Reentry · Community&nbsp; ★</div>
   <h1>Every American deserves<br><em>a second chance at health.</em></h1>
   <p class="hero-sub">IHAP connects justice-involved individuals to real healthcare coverage — before and after release. No cost to them. Life-changing impact.</p>
@@ -1334,13 +1333,60 @@ function fundRemainder() {
 function checkStripeReturn() {
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id');
-  const amount = params.get('amount');
-  if (sessionId && amount) {
-    const dollars = (parseInt(amount) / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  const amountCents = params.get('amount');
+  if (sessionId && amountCents) {
+    const donatedDollars = parseInt(amountCents) / 100;
+    const formatted = donatedDollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+    // Show success receipt
     document.getElementById('success-receipt').innerHTML =
-      `<strong>Amount:</strong> ${dollars}<br><strong>Type:</strong> One-time gift<br><strong>Status:</strong> Confirmed ✓`;
+      `<strong>Amount:</strong> ${formatted}<br><strong>Type:</strong> One-time gift<br><strong>Status:</strong> Confirmed ✓`;
     document.getElementById('success-overlay').classList.add('show');
+
+    // Live-update progress bar + remainder banner with this donation
+    updateProgressWithDonation(donatedDollars);
+
     window.history.replaceState({}, '', '/');
+  }
+}
+
+function updateProgressWithDonation(donatedAmount) {
+  const newRaised = RAISED + donatedAmount;
+  const pct = Math.min((newRaised / GOAL) * 100, 100);
+  const remaining = Math.max(GOAL - newRaised, 0);
+
+  // Animate progress bar to new level
+  document.getElementById('progress-raised').textContent = '$' + newRaised.toLocaleString() + ' raised';
+  document.getElementById('progress-pct').textContent = pct.toFixed(0) + '% to goal';
+  document.getElementById('progress-donors').textContent = '1 donor — thank you!';
+  setTimeout(() => { document.getElementById('progress-fill').style.width = pct + '%'; }, 100);
+
+  // Update or celebrate the remainder banner
+  const card = document.getElementById('remainder-card');
+  if (remaining <= 0) {
+    // 🎉 Goal fully funded — transform the card
+    card.style.transition = 'all .5s';
+    card.style.background = 'linear-gradient(135deg,#0a2214,#0D3320)';
+    card.style.borderColor = '#2ecc71';
+    card.style.boxShadow = '0 6px 28px rgba(46,204,113,.25)';
+    card.innerHTML = `
+      <div style="text-align:center;width:100%;padding:8px 0">
+        <div style="font-size:2.4rem;margin-bottom:10px">🎉</div>
+        <div style="font-family:sans-serif;font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:8px">
+          Goal Reached — Thank You!
+        </div>
+        <div style="font-family:sans-serif;font-size:.88rem;color:rgba(255,255,255,.75);max-width:460px;margin:0 auto;line-height:1.6">
+          IHAP's $${GOAL.toLocaleString()} goal has been fully funded. Your gift goes directly to connecting justice-involved individuals to healthcare and reentry support.
+        </div>
+        <div style="margin-top:16px;font-family:sans-serif;font-size:.75rem;color:rgba(255,255,255,.45);letter-spacing:.5px;text-transform:uppercase">
+          ✓ Tax receipt sent to your email
+        </div>
+      </div>`;
+  } else {
+    // Still short — update the remaining amount shown
+    const remFmt = '$' + remaining.toLocaleString();
+    document.getElementById('remainder-headline').textContent = `Fund the remaining ${remFmt}`;
+    document.getElementById('remainder-btn').textContent = `Fund ${remFmt} →`;
   }
 }
 async function processDonation() {
