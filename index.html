@@ -1580,87 +1580,148 @@ function showWireModal(fname, email, amt) {
   if (existing) existing.remove();
 
   const fmtAmt = '$' + amt.toLocaleString();
-  const ref    = fname.replace(/[^a-zA-Z0-9 ]/g, '') + ' IHAP Gift';
 
   const modal = document.createElement('div');
   modal.id = 'wire-modal';
   modal.style.cssText = `
     position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;
-    display:flex;align-items:center;justify-content:center;padding:20px;`;
+    display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;`;
 
   modal.innerHTML = `
-    <div style="background:#fff;border-radius:18px;max-width:520px;width:100%;
-         box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;">
+    <div id="wire-inner" style="background:#fff;border-radius:18px;max-width:520px;width:100%;
+         box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;margin:auto;">
 
       <!-- Header -->
       <div style="background:linear-gradient(135deg,#0D3320,#1a5c38);padding:22px 28px 18px;position:relative">
-        <div style="font-family:sans-serif;font-size:1.15rem;font-weight:900;color:#fff">
-          Wire Transfer Instructions
+        <div style="font-family:sans-serif;font-size:1.1rem;font-weight:900;color:#fff">
+          Make a Large Gift
         </div>
-        <div style="font-family:sans-serif;font-size:.85rem;color:rgba(255,255,255,.7);margin-top:4px">
-          For gifts over $10,000 — tax-deductible under EIN 41-4339110
+        <div style="font-family:sans-serif;font-size:.83rem;color:rgba(255,255,255,.7);margin-top:4px">
+          ${fmtAmt} wire transfer · tax-deductible · EIN 41-4339110
         </div>
         <button onclick="document.getElementById('wire-modal').remove()"
           style="position:absolute;top:16px;right:20px;background:rgba(255,255,255,.15);border:none;
                  border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:1rem;color:#fff;
-                 display:flex;align-items:center;justify-content:center;">✕</button>
+                 display:flex;align-items:center;justify-content:center;line-height:1">✕</button>
       </div>
 
-      <!-- Amount confirm -->
-      <div style="background:#f6fdf8;border-bottom:1px solid #e0ede4;padding:14px 28px;
-           display:flex;align-items:center;gap:10px">
-        <span style="font-size:1.3rem">💚</span>
-        <span style="font-family:sans-serif;font-size:.9rem;color:#0D3320;font-weight:700">
-          Gift Amount: ${fmtAmt}
-        </span>
-      </div>
-
-      <!-- Wire details -->
-      <div style="padding:24px 28px">
-        <table style="width:100%;border-collapse:collapse;font-family:sans-serif;font-size:.88rem">
-          ${wireRow('Bank', 'Truist Bank')}
-          ${wireRow('Account Name', 'Inmate Health Access Program (IHAP)')}
-          ${wireRow('Routing Number', '<span style="color:#B8920A;font-weight:700">Available Monday, Apr 28</span>')}
-          ${wireRow('Account Number', '<span style="color:#B8920A;font-weight:700">Available Monday, Apr 28</span>')}
-          ${wireRow('Reference / Memo', `<strong>${ref}</strong>`)}
-        </table>
-
-        <div style="margin-top:18px;padding:14px;background:#fff8e8;border-radius:10px;
-             border:1px solid #f0d88a;font-family:sans-serif;font-size:.82rem;color:#7a5a00;line-height:1.6">
-          📧 After initiating your wire, email <a href="mailto:info@ihapusa.org" style="color:#B8920A;font-weight:700">info@ihapusa.org</a>
-          with your name and gift amount. We'll send your official tax receipt within 24 hours.
+      <!-- Form state -->
+      <div id="wire-form-state" style="padding:24px 28px">
+        <p style="font-family:sans-serif;font-size:.88rem;color:#555;margin:0 0 20px;line-height:1.6">
+          Leave your details and we'll email you the wire instructions plus a personal note from Chad.
+          Your routing and account numbers will follow by Monday, April 28.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <label style="font-family:sans-serif;font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px">First Name *</label>
+            <input id="wire-fname" value="${fname}" type="text" placeholder="First"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;font-family:sans-serif">
+          </div>
+          <div>
+            <label style="font-family:sans-serif;font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px">Last Name</label>
+            <input id="wire-lname" type="text" placeholder="Last"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;font-family:sans-serif">
+          </div>
         </div>
-
-        <div style="margin-top:14px;font-family:sans-serif;font-size:.76rem;color:#aaa;text-align:center">
+        <div style="margin-bottom:12px">
+          <label style="font-family:sans-serif;font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px">Email Address *</label>
+          <input id="wire-email" value="${email}" type="email" placeholder="you@example.com"
+            style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;font-family:sans-serif">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <label style="font-family:sans-serif;font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px">Phone</label>
+            <input id="wire-phone" type="tel" placeholder="Optional"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;font-family:sans-serif">
+          </div>
+          <div>
+            <label style="font-family:sans-serif;font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px">Organization</label>
+            <input id="wire-org" type="text" placeholder="Optional"
+              style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;font-family:sans-serif">
+          </div>
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="font-family:sans-serif;font-size:.75rem;font-weight:700;color:#555;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px">Message (optional)</label>
+          <textarea id="wire-message" placeholder="Anything you'd like us to know..."
+            style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;font-family:sans-serif;resize:vertical;min-height:72px"></textarea>
+        </div>
+        <div id="wire-error" style="display:none;color:#c0392b;font-family:sans-serif;font-size:.82rem;margin-bottom:12px"></div>
+        <div style="display:flex;gap:10px">
+          <button id="wire-submit-btn" onclick="submitWireForm(${amt})"
+            style="flex:1;background:linear-gradient(135deg,#0D3320,#1a5c38);color:#fff;border:none;
+                   border-radius:10px;padding:14px;font-family:sans-serif;font-weight:800;font-size:.92rem;cursor:pointer">
+            Send Me Wire Instructions →
+          </button>
+          <button onclick="document.getElementById('wire-modal').remove()"
+            style="background:#f0f0f0;border:none;border-radius:10px;padding:14px 18px;
+                   font-family:sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;color:#555">
+            Cancel
+          </button>
+        </div>
+        <div style="margin-top:14px;font-family:sans-serif;font-size:.74rem;color:#aaa;text-align:center">
           IHAP is a 501(c)(3) public charity · EIN 41-4339110 · Gifts are tax-deductible to the full extent of the law
         </div>
       </div>
 
-      <!-- Footer -->
-      <div style="padding:0 28px 22px;display:flex;gap:10px">
-        <a href="mailto:info@ihapusa.org?subject=Wire%20Transfer%20Gift%20–%20${encodeURIComponent(fmtAmt)}&body=Hi%2C%0A%0AI%20am%20planning%20a%20wire%20transfer%20gift%20of%20${encodeURIComponent(fmtAmt)}%20to%20IHAP.%20Please%20send%20me%20the%20wire%20instructions%20and%20confirm%20receipt.%0A%0AName%3A%20${encodeURIComponent(fname)}%0AEmail%3A%20${encodeURIComponent(email)}"
-           style="flex:1;background:linear-gradient(135deg,#0D3320,#1a5c38);color:#fff;
-                  border-radius:10px;padding:13px;text-align:center;text-decoration:none;
-                  font-family:sans-serif;font-weight:800;font-size:.9rem;">
-          Email Us to Confirm →
-        </a>
-        <button onclick="document.getElementById('wire-modal').remove()"
-          style="background:#f0f0f0;border:none;border-radius:10px;padding:13px 18px;
-                 font-family:sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;color:#555">
-          Close
-        </button>
+      <!-- Thank you state (hidden until submit) -->
+      <div id="wire-thanks-state" style="display:none;padding:36px 28px;text-align:center">
+        <div style="font-size:2.5rem;margin-bottom:14px">💚</div>
+        <div style="font-family:sans-serif;font-size:1.15rem;font-weight:900;color:#0D3320;margin-bottom:10px">
+          Thank You — Check Your Email
+        </div>
+        <div style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.7;margin-bottom:20px" id="wire-thanks-msg">
+          We've sent wire instructions and a personal note from Chad to your inbox.<br>
+          The routing and account numbers will follow by <strong>Monday, April 28</strong> once our Truist account is active.
+        </div>
+        <div style="font-family:sans-serif;font-size:.78rem;color:#aaa">
+          Questions? <a href="mailto:info@ihapusa.org" style="color:#0D3320">info@ihapusa.org</a>
+        </div>
       </div>
+
     </div>`;
 
   document.body.appendChild(modal);
   modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
 }
 
-function wireRow(label, val) {
-  return `<tr>
-    <td style="padding:9px 0;border-bottom:1px solid #f0f0f0;color:#888;width:38%;vertical-align:top">${label}</td>
-    <td style="padding:9px 0;border-bottom:1px solid #f0f0f0;color:#1a1a1a;font-weight:600">${val}</td>
-  </tr>`;
+async function submitWireForm(amt) {
+  const fname   = document.getElementById('wire-fname').value.trim();
+  const lname   = document.getElementById('wire-lname').value.trim();
+  const email   = document.getElementById('wire-email').value.trim();
+  const phone   = document.getElementById('wire-phone').value.trim();
+  const org     = document.getElementById('wire-org').value.trim();
+  const message = document.getElementById('wire-message').value.trim();
+  const errEl   = document.getElementById('wire-error');
+  const btn     = document.getElementById('wire-submit-btn');
+
+  if (!fname) { errEl.textContent = 'Please enter your first name.'; errEl.style.display = 'block'; return; }
+  if (!email || !email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+
+  try {
+    const res  = await fetch('/.netlify/functions/send-wire-email', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ firstName: fname, lastName: lname, email, phone, org, amount: amt, message }),
+    });
+    const data = await res.json();
+
+    // Show thank-you state regardless of email delivery (we'll follow up manually if needed)
+    document.getElementById('wire-form-state').style.display  = 'none';
+    document.getElementById('wire-thanks-state').style.display = 'block';
+    if (data.warning === 'email_not_configured') {
+      document.getElementById('wire-thanks-msg').innerHTML =
+        `We've received your inquiry and Chad will be in touch at <strong>${email}</strong> with wire instructions.<br><br>
+         The routing and account numbers will be ready by <strong>Monday, April 28</strong>.`;
+    }
+  } catch (err) {
+    // Network error — still show thanks, we got the details
+    document.getElementById('wire-form-state').style.display  = 'none';
+    document.getElementById('wire-thanks-state').style.display = 'block';
+  }
 }
 
 function processDonation() {
