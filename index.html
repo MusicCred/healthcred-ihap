@@ -1066,6 +1066,11 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
         <span class="progress-donors" id="progress-donors">Be the first to give</span>
         <span id="progress-pct">0% to goal</span>
       </div>
+      <div id="days-left-bar" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:7px">
+        <span style="font-size:13px">⏳</span>
+        <span id="days-left-text" style="font-family:sans-serif;font-size:12px;font-weight:700;color:var(--navy)"></span>
+        <span id="days-left-sub" style="font-family:sans-serif;font-size:11px;color:var(--gray)"></span>
+      </div>
     </div>
 
     <!-- Fund the Remainder -->
@@ -1309,6 +1314,16 @@ function addToMonthRaised(amount) {
   const current = getMonthRaised();
   localStorage.setItem(getMonthKey(), (current + amount).toFixed(2));
 }
+function getDaysLeftInMonth() {
+  const now = new Date();
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  return lastDay - now.getDate();
+}
+function getNextMonthLabel() {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth() + 1, 1)
+    .toLocaleString('en-US', { month: 'long' });
+}
 
 // RAISED = what's been donated this calendar month (auto-resets on the 1st)
 const RAISED = getMonthRaised();
@@ -1320,6 +1335,21 @@ function initProgress() {
   // Show current month label (e.g. "April 2026 Goal")
   const ml = document.getElementById('month-label');
   if (ml) ml.textContent = getMonthLabel() + ' Goal';
+
+  // Days left countdown
+  const daysLeft = getDaysLeftInMonth();
+  const daysText = document.getElementById('days-left-text');
+  const daysSub = document.getElementById('days-left-sub');
+  if (daysText && daysSub) {
+    if (daysLeft === 0) {
+      daysText.textContent = 'Last day of ' + getMonthLabel().split(' ')[0] + '!';
+      daysSub.textContent = 'Goal resets tomorrow · Give today';
+      daysText.style.color = 'var(--crimson)';
+    } else {
+      daysText.textContent = daysLeft + ' day' + (daysLeft === 1 ? '' : 's') + ' left in ' + getMonthLabel().split(' ')[0];
+      daysSub.textContent = '· Goal resets ' + getNextMonthLabel() + ' 1st';
+    }
+  }
 
   document.getElementById('progress-raised').textContent = raised > 0 ? '$' + raised.toLocaleString() + ' raised' : 'Be first — every dollar counts';
   document.getElementById('progress-goal').textContent = 'of $' + goal.toLocaleString() + ' goal';
