@@ -1367,7 +1367,7 @@ function initProgress() {
 }
 
 function fundRemainder() {
-  const remaining = Math.max(GOAL - RAISED, 0);
+  const remaining = Math.max(GOAL - getMonthRaised(), 0);
   if (remaining <= 0) return;
 
   // Clear preset selections
@@ -1385,6 +1385,50 @@ function fundRemainder() {
   setTimeout(() => { box.style.boxShadow = ''; }, 2000);
   document.getElementById('donate').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+function showDonationToast(amountStr) {
+  // Remove any existing toast
+  const existing = document.getElementById('donation-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'donation-toast';
+  toast.innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:1.4rem">🎉</span>
+      <div>
+        <div style="font-weight:800;font-size:.92rem;color:#0D3320">Thank you for your gift!</div>
+        <div style="font-size:.8rem;color:#555;margin-top:2px">Your donation of <strong>${amountStr}</strong> just came through.</div>
+      </div>
+    </div>`;
+  toast.style.cssText = `
+    position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);
+    background:#fff;border:1.5px solid #2ecc71;border-radius:14px;
+    padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,.18);
+    z-index:9999;opacity:0;transition:all .45s cubic-bezier(.22,1,.36,1);
+    min-width:280px;max-width:90vw;cursor:pointer;`;
+  document.body.appendChild(toast);
+
+  // Animate in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+  });
+
+  // Click to dismiss early
+  toast.addEventListener('click', () => dismissToast(toast));
+
+  // Auto-dismiss after 6 seconds
+  setTimeout(() => dismissToast(toast), 6000);
+}
+
+function dismissToast(toast) {
+  toast.style.opacity = '0';
+  toast.style.transform = 'translateX(-50%) translateY(80px)';
+  setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 450);
+}
+
 function checkStripeReturn() {
   const params = new URLSearchParams(window.location.search);
   const donated = params.get('donated');
@@ -1407,13 +1451,16 @@ function checkStripeReturn() {
       `<strong>Amount:</strong> ${formatted}<br><strong>Type:</strong> ${typeLabel}<br><strong>Status:</strong> Confirmed ✓`;
     document.getElementById('success-overlay').classList.add('show');
 
-    if (donatedDollars > 0) updateProgressWithDonation(donatedDollars);
+    if (donatedDollars > 0) {
+      updateProgressWithDonation(donatedDollars);
+      showDonationToast(formatted);
+    }
     window.history.replaceState({}, '', '/');
   }
 }
 
 function updateProgressWithDonation(donatedAmount) {
-  const newRaised = RAISED + donatedAmount;
+  const newRaised = getMonthRaised();
   const pct = Math.min((newRaised / GOAL) * 100, 100);
   const remaining = Math.max(GOAL - newRaised, 0);
 
