@@ -806,24 +806,20 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
   .mission-cards{grid-template-columns:1fr 1fr}
   .how-steps{grid-template-columns:1fr 1fr}
   .who-benefits{grid-template-columns:repeat(4,1fr)}
-}
   nav{padding:0 32px;height:68px}
   .nav-logo-img{height:48px}
   .nav-cta{font-size:13px;padding:11px 24px}
-
   .hero{padding:64px 40px 72px}
-
   .story-numbers{grid-template-columns:repeat(3,1fr);gap:0}
   .story-num-block{padding:0 24px;position:relative}
   .story-num-block+.story-num-block::before{content:'';position:absolute;left:0;top:10%;bottom:10%;width:1px;background:rgba(255,255,255,.15)}
-
   .amount-grid{grid-template-columns:repeat(3,1fr)}
-
   .donate-box{padding:36px 32px}
-
   .donate-section{padding:72px 32px}
-
   .name-row{grid-template-columns:1fr 1fr}
+  .partner-pillars{grid-template-columns:repeat(3,1fr) !important}
+  .partner-pillars > div{border-bottom:none !important;border-right:1px solid rgba(255,255,255,.08)}
+  .partner-pillars > div:last-child{border-right:none}
 }
 
 /* ── DESKTOP ── */
@@ -1281,13 +1277,13 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
       </div>
 
       <!-- Bottom: 3 partnership pillars -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.08)">
-        <div style="padding:20px 22px;border-right:1px solid rgba(255,255,255,.08)">
+      <div class="partner-pillars" style="display:grid;grid-template-columns:1fr;border-top:1px solid rgba(255,255,255,.08)">
+        <div style="padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
           <div style="font-size:1.4rem;margin-bottom:8px">🏛️</div>
           <div style="font-family:sans-serif;font-size:12px;font-weight:800;color:#fff;margin-bottom:5px">501(c)(3) Formation</div>
           <div style="font-family:sans-serif;font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.6">Julio's team guided IHAP's nonprofit establishment — legal structure, IRS registration, and compliance framework.</div>
         </div>
-        <div style="padding:20px 22px;border-right:1px solid rgba(255,255,255,.08)">
+        <div style="padding:20px 22px;border-bottom:1px solid rgba(255,255,255,.08)">
           <div style="font-size:1.4rem;margin-bottom:8px">📋</div>
           <div style="font-family:sans-serif;font-size:12px;font-weight:800;color:#fff;margin-bottom:5px">Grant Strategy</div>
           <div style="font-family:sans-serif;font-size:11.5px;color:rgba(255,255,255,.5);line-height:1.6">ETS identifies, qualifies, and manages grant applications from federal, state, local, and private sources on IHAP's behalf.</div>
