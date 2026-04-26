@@ -832,6 +832,76 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
   .trust-band{padding:56px 40px}
   footer{padding:36px 56px}
 }
+
+/* ── PHOTO MOMENTS GRID ── */
+.photo-moments{
+  display:grid;
+  grid-template-columns:1fr;
+  position:relative;z-index:1;
+}
+.photo-moment{
+  position:relative;overflow:hidden;height:240px;
+}
+.photo-moment img{
+  width:100%;height:100%;object-fit:cover;object-position:center;
+  transition:transform .5s ease;
+}
+.photo-moment:hover img{transform:scale(1.04)}
+.photo-moment-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top, rgba(13,27,53,.88) 0%, rgba(13,27,53,.2) 55%, transparent 100%);
+}
+.photo-moment-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:18px 20px;
+  font-family:sans-serif;font-size:13px;font-weight:700;
+  color:#fff;letter-spacing:.3px;
+}
+.photo-moment-label span{
+  display:block;font-size:11px;font-weight:400;
+  color:rgba(255,255,255,.6);margin-top:3px;
+}
+@media(min-width:600px){
+  .photo-moments{grid-template-columns:repeat(3,1fr)}
+  .photo-moment{height:300px}
+}
+@media(min-width:1024px){
+  .photo-moment{height:340px}
+}
+
+/* ── CINEMATIC BANNER ── */
+.cinematic-banner{
+  position:relative;overflow:hidden;height:260px;z-index:1;
+}
+.cinematic-banner img{
+  width:100%;height:100%;object-fit:cover;object-position:center 38%;
+}
+.cinematic-banner-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right, rgba(13,27,53,.92) 0%, rgba(13,27,53,.55) 65%, rgba(13,27,53,.15) 100%);
+}
+.cinematic-banner-text{
+  position:absolute;inset:0;
+  display:flex;align-items:center;
+  padding:0 clamp(20px,6%,80px);
+}
+.cinematic-banner-inner{max-width:540px}
+.cinematic-banner-eyebrow{
+  font-family:sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:3px;text-transform:uppercase;
+  color:#B8920A;margin-bottom:12px;
+}
+.cinematic-banner-h{
+  font-family:Georgia,serif;
+  font-size:clamp(1.3rem,3.5vw,2rem);
+  color:#fff;font-weight:700;line-height:1.35;
+}
+@media(min-width:600px){
+  .cinematic-banner{height:320px}
+}
+@media(min-width:1024px){
+  .cinematic-banner{height:380px}
+}
 </style>
 </head>
 <body>
@@ -933,6 +1003,20 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
   </div>
   <button class="btn-primary" onclick="scrollToDonate()">Make a Tax-Deductible Gift →</button>
   <div class="hero-trust">🔒 &nbsp;Secure · 501(c)(3) · EIN 41-4339110 · 78¢ of every dollar funds direct programs</div>
+</div>
+
+<!-- ── CINEMATIC BANNER ── -->
+<div class="cinematic-banner">
+  <img src="https://images.pexels.com/photos/9148626/pexels-photo-9148626.jpeg?auto=compress&cs=tinysrgb&w=1400&q=80"
+       alt="Person walking toward sunrise — new beginnings after release"
+       loading="lazy">
+  <div class="cinematic-banner-overlay"></div>
+  <div class="cinematic-banner-text">
+    <div class="cinematic-banner-inner">
+      <div class="cinematic-banner-eyebrow">Every Release Is a Starting Line</div>
+      <div class="cinematic-banner-h">The moment someone walks out, their coverage, their doctor, and their plan should already be in place.</div>
+    </div>
+  </div>
 </div>
 
 <!-- ── MISSION ── -->
@@ -1037,8 +1121,39 @@ footer a{color:rgba(255,255,255,.35);text-decoration:underline}
   </div>
 </div>
 
+<!-- ── PHOTO MOMENTS ── -->
+<div class="photo-moments">
+  <div class="photo-moment">
+    <img src="https://images.pexels.com/photos/8413295/pexels-photo-8413295.jpeg?auto=compress&cs=tinysrgb&w=700&q=80"
+         alt="Healthcare enrollment — patient receiving paperwork from provider" loading="lazy">
+    <div class="photo-moment-overlay"></div>
+    <div class="photo-moment-label">
+      Coverage begins inside
+      <span>Enrollment while still in custody — no gap at the gate</span>
+    </div>
+  </div>
+  <div class="photo-moment">
+    <img src="https://images.pexels.com/photos/7465698/pexels-photo-7465698.jpeg?auto=compress&cs=tinysrgb&w=700&q=80"
+         alt="Healthcare volunteers and team working in community" loading="lazy">
+    <div class="photo-moment-overlay"></div>
+    <div class="photo-moment-label">
+      Built on community
+      <span>Staff, volunteers, and partners working together around every person</span>
+    </div>
+  </div>
+  <div class="photo-moment">
+    <img src="https://images.pexels.com/photos/3827679/pexels-photo-3827679.jpeg?auto=compress&cs=tinysrgb&w=700&q=80"
+         alt="Person celebrating freedom at sunrise — a real second chance" loading="lazy">
+    <div class="photo-moment-overlay"></div>
+    <div class="photo-moment-label">
+      A real second chance
+      <span>Healthcare access that lasts — from release day forward</span>
+    </div>
+  </div>
+</div>
+
 <!-- ── STORY STRIP ── -->
-<div class="story-strip">
+<div class="story-strip" style="background:linear-gradient(160deg,rgba(13,27,53,.96) 0%,rgba(26,45,80,.96) 100%), url('https://images.pexels.com/photos/4003611/pexels-photo-4003611.jpeg?auto=compress&cs=tinysrgb&w=1400&q=80') center/cover no-repeat">
   <p class="story-quote">"When someone walks out of a facility with no ID, no insurance, and no doctor — they come back. <strong>We break that cycle.</strong>"</p>
   <div class="story-cite">— HealthCred / IHAP Field Team, Lee County FL</div>
   <div class="story-numbers">
