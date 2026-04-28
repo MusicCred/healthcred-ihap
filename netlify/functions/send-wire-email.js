@@ -118,7 +118,7 @@ function donorEmailHtml({ firstName, amount, refCode }) {
     </p>
     <p style="font-size:1rem;color:#333;line-height:1.8;margin:0 0 24px">
       — Chad R. LaBoy<br>
-      <span style="font-size:.85rem;color:#888">Founder &amp; Chairman, IHAP &nbsp;·&nbsp; President, HealthCred</span>
+      <span style="font-size:.85rem;color:#888">Founder &amp; President, Inmate Health Access Program (IHAP)</span>
     </p>
   </div>
 
@@ -139,11 +139,11 @@ function donorEmailHtml({ firstName, amount, refCode }) {
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#888">Routing Number</td>
-        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#B8920A;font-weight:700">Coming soon — we will email you by Monday, Apr 28</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#1a1a1a;font-weight:700">263191387</td>
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#888">Account Number</td>
-        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#B8920A;font-weight:700">Coming soon — we will email you by Monday, Apr 28</td>
+        <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#1a1a1a;font-weight:700">1100035610039</td>
       </tr>
       <tr>
         <td style="padding:10px 0;border-bottom:1px solid #f0f0f0;color:#888">Gift Amount</td>
@@ -155,9 +155,9 @@ function donorEmailHtml({ firstName, amount, refCode }) {
       </tr>
     </table>
 
-    <div style="margin-top:20px;padding:14px 16px;background:#fff8e8;border-radius:10px;
-         border-left:4px solid #B8920A;font-size:.85rem;color:#7a5a00;line-height:1.6">
-      <strong>Next step:</strong> Once our Truist account is active (Monday, Apr 28), we'll send you the routing and account numbers directly. You don't need to do anything — we'll follow up automatically.
+    <div style="margin-top:20px;padding:14px 16px;background:#f6fdf8;border-radius:10px;
+         border-left:4px solid #0D3320;font-size:.85rem;color:#1a4a2a;line-height:1.6">
+      <strong>Next step:</strong> Initiate the wire using the details above. Please include your reference code in the memo field. Chad will follow up personally once the gift is received.
     </div>
 
     <div style="margin-top:24px;padding:16px;background:#f6fdf8;border-radius:10px;font-size:.83rem;color:#555;line-height:1.6;text-align:center">
@@ -186,7 +186,7 @@ function notifyEmailHtml({ firstName, lastName, email, phone, org, amount, messa
   <tr><td style="padding:8px 12px;background:#f4f4f4;font-weight:700">Gift Amount</td><td style="padding:8px 12px;border-bottom:1px solid #eee;color:#0D3320;font-weight:700">${fmtAmt}</td></tr>
   <tr><td style="padding:8px 12px;background:#f4f4f4;font-weight:700">Message</td><td style="padding:8px 12px">${message || '—'}</td></tr>
 </table>
-<p style="margin-top:20px;color:#555;font-size:.85rem">Wire instructions email sent to ${email}. Follow up Monday with Truist routing + account numbers.</p>
+<p style="margin-top:20px;color:#555;font-size:.85rem">Wire instructions email sent to ${email}. Truist details included: Routing 263191387, Account 1100035610039.</p>
 </body></html>`;
 }
 
